@@ -33,9 +33,9 @@ Sistem informasi ini bertujuan untuk membantu warga mendaftar program pelatihan 
 
 #### 3. **Manajemen Lowongan Kerja**
 
-* Admin mengunggah lowongan kerja (dari perusahaan lokal/UMKM)
-* Warga dapat melamar (upload CV PDF)
-
+* Admin mengunggah lowongan kerja
+* Warga dapat melamar
+  
 #### 4. **Status & Riwayat**
 
 * Halaman warga untuk melihat riwayat pelatihan & lamaran kerja
@@ -44,8 +44,7 @@ Sistem informasi ini bertujuan untuk membantu warga mendaftar program pelatihan 
 #### 5. **Dashboard Admin**
 
 * Statistik pelatihan: jumlah peserta, jumlah pelatihan aktif
-* Statistik lowongan: total lowongan, pelamar per lowongan (gunakan Chart.js)
-
+* Statistik lowongan: total lowongan, pelamar per lowongan
 ---
 ### Teknologi:
 
