@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat - BantuKerja</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="dashboard.html">BantuKerja</a>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="profile.html" id="logoutBtn" class="btn-logout">
+                        <i class="fas fa-user"></i> Profile
+                    </a></li>
+                    <li><a href="login.html" id="logoutBtn" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>                 
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="pelatihan.html"><i class="fas fa-book"></i> Pelatihan</a></li>
+                    <li><a href="lowongan.html"><i class="fas fa-briefcase"></i> Lowongan Kerja</a></li>
+                    <li><a href="riwayat.html"><i class="fas fa-history"></i> Riwayat</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifikasi</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1>Riwayat</h1>
+                <p>Pantau riwayat pelatihan dan lamaran kerja Anda</p>
+            </div>
+
+            <div class="tabs">
+                <div class="tab-header">
+                    <button class="tab-btn active" data-tab="pelatihan">Pelatihan</button>
+                    <button class="tab-btn" data-tab="lamaran">Lamaran Kerja</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="pelatihanTab">
+                        <div id="trainingHistory">
+                            <!-- Training history will be loaded here via JavaScript -->
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="lamaranTab">
+                        <div id="jobApplicationHistory">
+                            <!-- Job application history will be loaded here via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 KerjaAja. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            const trainingHistoryContainer = document.getElementById('trainingHistory');
+            const jobApplicationHistoryContainer = document.getElementById('jobApplicationHistory');
+            
+            // Tab functionality
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and panes
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to current button and pane
+                    this.classList.add('active');
+                    document.getElementById(tabName + 'Tab').classList.add('active');
+                });
+            });
+            
+            // Display training history
+            if (mockTrainingHistory.length === 0) {
+                trainingHistoryContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Belum ada riwayat pelatihan</h3>
+                        <p>Anda belum pernah mendaftar pelatihan</p>
+                    </div>
+                `;
+            } else {
+                mockTrainingHistory.forEach(training => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-card';
+                    
+                    let statusClass = '';
+                    let statusText = '';
+                    
+                    switch (training.status) {
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            statusText = 'Menunggu';
+                            break;
+                        case 'accepted':
+                            statusClass = 'status-accepted';
+                            statusText = 'Diterima';
+                            break;
+                        case 'rejected':
+                            statusClass = 'status-rejected';
+                            statusText = 'Ditolak';
+                            break;
+                        case 'completed':
+                            statusClass = 'status-completed';
+                            statusText = 'Selesai';
+                            break;
+                        case 'ongoing':
+                            statusClass = 'status-ongoing';
+                            statusText = 'Sedang Berlangsung';
+                            break;
+                    }
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-header">
+                            <div>
+                                <h3>${training.name}</h3>
+                                <p>${training.date} • ${training.location}</p>
+                            </div>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <p class="history-description">${training.description}</p>
+                        ${training.status === 'completed' ? 
+                            '<button class="btn btn-outline btn-sm">Lihat Sertifikat</button>' : ''}
+                    `;
+                    
+                    trainingHistoryContainer.appendChild(historyItem);
+                });
+            }
+            
+            // Display job application history
+            if (mockJobApplicationHistory.length === 0) {
+                jobApplicationHistoryContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Belum ada riwayat lamaran</h3>
+                        <p>Anda belum pernah melamar pekerjaan</p>
+                    </div>
+                `;
+            } else {
+                mockJobApplicationHistory.forEach(application => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-card';
+                    
+                    let statusClass = '';
+                    let statusText = '';
+                    
+                    switch (application.status) {
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            statusText = 'Menunggu';
+                            break;
+                        case 'accepted':
+                            statusClass = 'status-accepted';
+                            statusText = 'Diterima';
+                            break;
+                        case 'rejected':
+                            statusClass = 'status-rejected';
+                            statusText = 'Ditolak';
+                            break;
+                    }
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-header">
+                            <div>
+                                <h3>${application.jobTitle}</h3>
+                                <p>${application.company} • ${application.location}</p>
+                            </div>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="history-details">
+                            <div class="detail-row">
+                                <span>Tanggal Lamaran:</span>
+                                <span>${application.applicationDate}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>CV:</span>
+                                <span>${application.cv}</span>
+                            </div>
+                        </div>
+                        ${application.status === 'accepted' ? 
+                            '<button class="btn btn-primary btn-sm">Lihat Detail Penerimaan</button>' : ''}
+                    `;
+                    
+                    jobApplicationHistoryContainer.appendChild(historyItem);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
