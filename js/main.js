@@ -275,8 +275,6 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmDelete.addEventListener("click", function () {
       const trainingId = this.getAttribute("data-id")
 
-      // Here you would normally delete the training from your database
-      // For now, we'll just show a success message
       closeModal(deleteModal)
       showToast("Pelatihan berhasil dihapus", "success")
     })
