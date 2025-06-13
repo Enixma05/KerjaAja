@@ -9,15 +9,19 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+// Total lowongan
 $q1 = $conn->query("SELECT COUNT(*) as total_lowongan FROM lowongan");
 $total_lowongan = $q1->fetch_assoc()['total_lowongan'];
 
+// Total lamaran
 $q2 = $conn->query("SELECT COUNT(*) as total_lamaran FROM lamaran");
 $total_lamaran = $q2->fetch_assoc()['total_lamaran'];
 
+// Total pelatihan
 $q3 = $conn->query("SELECT COUNT(*) as total_pelatihan FROM pelatihan");
 $total_pelatihan = $q3->fetch_assoc()['total_pelatihan'];
 
+// Total peserta pelatihan
 $q4 = $conn->query("SELECT COUNT(*) as total_peserta FROM pendaftaran_pelatihan");
 $total_peserta = $q4->fetch_assoc()['total_peserta'];
 
@@ -64,6 +68,7 @@ while ($row = $result->fetch_assoc()) {
 </head>
 
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -71,6 +76,7 @@ while ($row = $result->fetch_assoc()) {
             </div>
             <nav class="nav">
                 <ul>
+                    <!-- Admin Notifications -->
                     <li class="notification-dropdown">
                         <div class="notification-menu" id="adminNotificationMenu">
                             <div class="notification-header">
@@ -81,6 +87,7 @@ while ($row = $result->fetch_assoc()) {
                                 </button>
                             </div>
                             <div class="notification-list" id="adminNotificationList">
+                                <!-- Admin notifications will be populated by JavaScript -->
                             </div>
                             <div class="notification-footer">
                                 <a href="admin-notifications.php" id="viewAllAdminNotifications">Lihat Semua
@@ -88,6 +95,7 @@ while ($row = $result->fetch_assoc()) {
                             </div>
                         </div>
                     </li>
+                    <!-- Send Notification Button -->
                     <li>
                         <button class="btn btn-primary" id="sendNotificationBtn">
                             <i class="fas fa-paper-plane"></i> Kirim Notifikasi
@@ -101,8 +109,10 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </header>
 
+    <!-- Notification Toast Container -->
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Send Notification Modal -->
     <div id="sendNotificationModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeSendModal">&times;</span>
@@ -175,7 +185,9 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </div>
 
+    <!-- Dashboard Content -->
     <div class="dashboard-container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <nav class="sidebar-nav">
                 <ul>
@@ -188,6 +200,7 @@ while ($row = $result->fetch_assoc()) {
             </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
             <div class="page-header">
                 <h1>Dashboard Admin</h1>
@@ -254,6 +267,7 @@ while ($row = $result->fetch_assoc()) {
                 </div>
             </div>
 
+            <!-- Quick Notification Actions -->
             <section class="quick-notification-actions">
                 <h2>Aksi Cepat Notifikasi</h2>
                 <div class="quick-actions-grid">
@@ -280,83 +294,135 @@ while ($row = $result->fetch_assoc()) {
                 </div>
             </section>
 
-            <footer class="footer">
-                <div class="container">
-                    <div class="footer-bottom">
-                        <p>&copy; 2025 KerjaAja. Hak Cipta Dilindungi.</p>
+            <div class="recent-activities">
+                <h2>Aktivitas Terbaru</h2>
+                <div class="activities-list">
+                    <div class="activity-item">
+                        <div class="activity-icon blue">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Pendaftaran Pelatihan Baru</h4>
+                            <p>Fadlullah Hasan mendaftar pelatihan Desain Grafis</p>
+                        </div>
+                        <div class="activity-time">5 menit yang lalu</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon amber">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Lamaran Kerja Baru</h4>
+                            <p>Ani Wijaya melamar posisi Customer Service Representative di PT Maju Bersama</p>
+                        </div>
+                        <div class="activity-time">30 menit yang lalu</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon green">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Notifikasi Terkirim</h4>
+                            <p>Notifikasi reminder pelatihan terkirim ke 45 peserta</p>
+                        </div>
+                        <div class="activity-time">1 jam yang lalu</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon blue">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Pelatihan Selesai</h4>
+                            <p>Pelatihan Digital Marketing telah selesai dengan 15 peserta</p>
+                        </div>
+                        <div class="activity-time">2 jam yang lalu</div>
                     </div>
                 </div>
-            </footer>
+            </div>
+        </main>
+    </div>
 
-            <script src="js/main.js"></script>
-            <script src="js/notifications.js"></script>
-            <script src="js/admin-notifications.js"></script>
-            <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const trainingCtx = document.getElementById('trainingChart').getContext('2d');
-                const applicationCtx = document.getElementById('applicationChart').getContext('2d');
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 KerjaAja. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
 
-                const trainingData = {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul'],
-                    datasets: [{
-                        label: 'Jumlah Pelatihan',
-                        data: <?= json_encode(array_values($trainingCounts)); ?>,
-                        backgroundColor: '#3b82f6',
-                        borderRadius: 4
-                    }]
-                };
+    <!-- <script src="js/data.js"></script> -->
+    <script src="js/main.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/admin-notifications.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup charts
+        const trainingCtx = document.getElementById('trainingChart').getContext('2d');
+        const applicationCtx = document.getElementById('applicationChart').getContext('2d');
 
-                const applicationData = {
-                    labels: ['Diterima', 'Ditolak', 'Menunggu'],
-                    datasets: [{
-                        label: 'Status Lamaran',
-                        data: <?= json_encode(array_values($statusCounts)); ?>,
-                        backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
-                        borderWidth: 0
-                    }]
-                };
+        const trainingData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul'],
+            datasets: [{
+                label: 'Jumlah Pelatihan',
+                data: <?= json_encode(array_values($trainingCounts)); ?>,
+                backgroundColor: '#3b82f6',
+                borderRadius: 4
+            }]
+        };
 
-                // Create training chart
-                new Chart(trainingCtx, {
-                    type: 'bar',
-                    data: trainingData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    precision: 0
-                                }
-                            }
+        const applicationData = {
+            labels: ['Diterima', 'Ditolak', 'Menunggu'],
+            datasets: [{
+                label: 'Status Lamaran',
+                data: <?= json_encode(array_values($statusCounts)); ?>,
+                backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                borderWidth: 0
+            }]
+        };
+
+        // Create training chart
+        new Chart(trainingCtx, {
+            type: 'bar',
+            data: trainingData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
                         }
                     }
-                });
+                }
+            }
+        });
 
-                new Chart(applicationCtx, {
-                    type: 'pie',
-                    data: applicationData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
+        // Create application status chart
+        new Chart(applicationCtx, {
+            type: 'pie',
+            data: applicationData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
                     }
-                });
+                }
+            }
+        });
 
-                // Setup logout button
-                document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (confirm('Apakah Anda yakin ingin logout?')) {
-                        window.location.href = 'logout.php';
-                    }
-                });
-            });
-            </script>
+        // Setup logout button
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'logout.php';
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

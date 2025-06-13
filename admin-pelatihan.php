@@ -2,6 +2,7 @@
 <?php
 include 'koneksi.php';
 
+// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -34,6 +35,7 @@ mysqli_close($conn);
 </head>
 
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -41,6 +43,7 @@ mysqli_close($conn);
             </div>
             <nav class="nav">
                 <ul>
+                    <!-- Admin Notifications -->
                     <li class="notification-dropdown">
                         <div class="notification-menu" id="adminNotificationMenu">
                             <div class="notification-header">
@@ -51,6 +54,7 @@ mysqli_close($conn);
                                 </button>
                             </div>
                             <div class="notification-list" id="adminNotificationList">
+                                <!-- Admin notifications will be populated by JavaScript -->
                             </div>
                             <div class="notification-footer">
                                 <a href="admin-notifications.php" id="viewAllAdminNotifications">Lihat Semua
@@ -58,6 +62,7 @@ mysqli_close($conn);
                             </div>
                         </div>
                     </li>
+                    <!-- Send Notification Button -->
                     <li>
                         <button class="btn btn-primary" id="sendNotificationBtn"><i class="fas fa-paper-plane"></i>
                             Kirim Notifikasi</button>
@@ -70,8 +75,10 @@ mysqli_close($conn);
         </div>
     </header>
 
+    <!-- Notification Toast Container -->
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Send Notification Modal -->
     <div id="sendNotificationModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeSendModal">&times;</span>
@@ -142,7 +149,9 @@ mysqli_close($conn);
         </div>
     </div>
 
+    <!-- Dashboard Content -->
     <div class="dashboard-container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <nav class="sidebar-nav">
                 <ul>
@@ -165,6 +174,7 @@ mysqli_close($conn);
             </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
             <div class="page-header-actions">
                 <div>
@@ -196,27 +206,25 @@ mysqli_close($conn);
                     </thead>
                     <tbody>
                         <?php if (count($dataPelatihan) > 0): ?>
-                        <?php foreach ($dataPelatihan as $pelatihan): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($pelatihan['nama']) ?></td>
-                            <td><?= date("d/m/Y", strtotime($pelatihan['tanggal'])) ?></td>
-                            <td><?= htmlspecialchars($pelatihan['lokasi']) ?></td>
-                            <td><?= htmlspecialchars($pelatihan['kuota']) ?></td>
-                            <td><?= htmlspecialchars($pelatihan['deskripsi']) ?></td>
-                            <td class="text-right">
-                                <div class="action-buttons">
-                                    <a href="edit_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>"
-                                        class="edit-btn">Edit</a>
-                                    <a href="delete_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>"
-                                        onclick="return confirm('Hapus data ini?')">Hapus</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
+                            <?php foreach ($dataPelatihan as $pelatihan): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($pelatihan['nama']) ?></td>
+                                    <td><?= date("d/m/Y", strtotime($pelatihan['tanggal'])) ?></td>
+                                    <td><?= htmlspecialchars($pelatihan['lokasi']) ?></td>
+                                    <td><?= htmlspecialchars($pelatihan['kuota']) ?></td>
+                                    <td><?= htmlspecialchars($pelatihan['deskripsi']) ?></td>
+                                    <td class="text-right">
+                                        <div class="action-buttons">
+                                            <a href="edit_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>" class="edit-btn">Edit</a>
+                                            <a href="delete_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>" onclick="return confirm('Hapus data ini?')">Hapus</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                         <?php else: ?>
-                        <tr>
-                            <td colspan="6" style="text-align:center;">Belum ada data pelatihan.</td>
-                        </tr>
+                            <tr>
+                                <td colspan="6" style="text-align:center;">Belum ada data pelatihan.</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -224,6 +232,7 @@ mysqli_close($conn);
         </main>
     </div>
 
+    <!-- Add/Edit Training Modal -->
     <div id="trainingModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -252,8 +261,7 @@ mysqli_close($conn);
                 </div>
                 <div class="form-group">
                     <label for="description">Deskripsi</label>
-                    <textarea id="description" name="deskripsi" placeholder="Deskripsi pelatihan" rows="4"
-                        required></textarea>
+                    <textarea id="description" name="deskripsi" placeholder="Deskripsi pelatihan" rows="4" required></textarea>
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-outline" id="cancelTraining">Batal</button>
@@ -263,6 +271,7 @@ mysqli_close($conn);
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -275,6 +284,7 @@ mysqli_close($conn);
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-bottom">
@@ -306,6 +316,8 @@ mysqli_close($conn);
 
         let selectedTrainingId = null;
 
+
+        // Search functionality
         searchInput.addEventListener("input", function() {
             const searchTerm = this.value.toLowerCase();
             const filteredTrainings = mockAdminTrainings.filter((training) => training.name
@@ -316,7 +328,7 @@ mysqli_close($conn);
         });
 
         document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 document.getElementById('modalTitle').innerText = "Edit Pelatihan";
                 document.getElementById('modalDescription').innerText = "Ubah detail pelatihan";
                 document.getElementById('trainingForm').action = "update_pelatihan.php";
@@ -329,6 +341,7 @@ mysqli_close($conn);
                 document.getElementById('quota').value = this.dataset.kuota;
                 document.getElementById('description').value = this.dataset.deskripsi;
 
+                // Tampilkan modal
                 document.getElementById('trainingModal').style.display = "block";
             });
         });
@@ -340,8 +353,12 @@ mysqli_close($conn);
                 deleteModal.style.display = "block";
             });
         });
+        
 
 
+
+
+        // Open edit training modal
         function openEditModal(trainingId) {
             const training = mockAdminTrainings.find((t) => t.id == trainingId);
 
@@ -360,28 +377,36 @@ mysqli_close($conn);
             }
         }
 
+        // Handle form submission
         trainingForm.addEventListener("submit", function(e) {
 
+            // Validate form
             if (!nameInput.value || !dateInput.value || !locationInput.value || !quotaInput.value || !
                 descriptionInput.value) {
                 alert("Semua field harus diisi");
                 return;
             }
 
+            // In a real app, this would send data to a server
             if (trainingIdInput.value) {
+                // Editing existing training
                 alert("Pelatihan berhasil diperbarui!");
             } else {
+                // Adding new training
                 alert("Pelatihan baru berhasil ditambahkan!");
             }
 
             trainingModal.style.display = "none";
         });
 
+        // Handle delete confirmation
         document.getElementById("confirmDelete").addEventListener("click", function() {
+            // In a real app, this would send a delete request to a server
             alert("Pelatihan berhasil dihapus!");
             deleteModal.style.display = "none";
         });
 
+        // Close modals
         document.querySelectorAll(".close-modal").forEach((closeBtn) => {
             closeBtn.addEventListener("click", function() {
                 trainingModal.style.display = "none";
@@ -397,6 +422,7 @@ mysqli_close($conn);
             deleteModal.style.display = "none";
         });
 
+        // Close modals when clicking outside
         window.addEventListener("click", function(event) {
             if (event.target === trainingModal) {
                 trainingModal.style.display = "none";
@@ -406,6 +432,7 @@ mysqli_close($conn);
             }
         });
 
+        // Setup logout button
         document.getElementById("logoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
             window.location.href = "logut.php";

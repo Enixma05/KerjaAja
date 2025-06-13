@@ -2,11 +2,13 @@
 session_start();
 include 'koneksi.php';
 
+// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
+// Cek apakah ID pelatihan dikirim via GET
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo "ID lowongan tidak ditemukan.";
     exit();
@@ -14,6 +16,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $lowongan_id = $_GET['id'];
 
+// Ambil data pelatihan dari database
 $query = "SELECT * FROM lowongan WHERE lowongan_id = ?";
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "i", $lowongan_id);
@@ -31,13 +34,11 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <title>Edit Lowongan</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
     <div class="form-container">
         <h2>Edit Data Lowongan</h2>
@@ -51,14 +52,12 @@ mysqli_close($conn);
 
             <div class="form-group">
                 <label for="perusahaan">Perusahaan</label>
-                <input type="text" id="perusahaan" name="perusahaan"
-                    value="<?= htmlspecialchars($data['perusahaan']) ?>" required>
+                <input type="text" id="perusahaan" name="perusahaan" value="<?= htmlspecialchars($data['perusahaan']) ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="jenis">Jenis</label>
-                <input type="text" id="deskripsi" name="deskripsi" value="<?= htmlspecialchars($data['deskripsi']) ?>"
-                    required>
+                <input type="text" id="deskripsi" name="deskripsi" value="<?= htmlspecialchars($data['deskripsi']) ?>" required>
             </div>
 
             <div class="form-group">
@@ -68,14 +67,12 @@ mysqli_close($conn);
 
             <div class="form-group">
                 <label for="bataslamaran">Batas Lamaran</label>
-                <input type="date" id="batas_lamaran" name="batas_lamaran"
-                    value="<?= htmlspecialchars($data['batas_lamaran']) ?>" required>
+                <input type="date" id="batas_lamaran" name="batas_lamaran" value="<?= htmlspecialchars($data['batas_lamaran']) ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="kualifikasi">Kualifikasi</label>
-                <textarea id="kualifikasi" name="kualifikasi" rows="4"
-                    required><?= htmlspecialchars($data['kualifikasi']) ?></textarea>
+                <textarea id="kualifikasi" name="kualifikasi" rows="4" required><?= htmlspecialchars($data['kualifikasi']) ?></textarea>
             </div>
 
             <div class="form-actions">
@@ -85,5 +82,4 @@ mysqli_close($conn);
         </form>
     </div>
 </body>
-
 </html>

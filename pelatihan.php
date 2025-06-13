@@ -41,7 +41,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelatihan - KerjaAja</title>
+    <title>Pelatihan - BantuKerja</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -63,7 +63,7 @@ $result = $stmt->get_result();
     <header class="header">
         <div class="container">
             <div class="logo">
-                <a href="dashboard.php">KerjaAja</a>
+                <a href="dashboard.php">BantuKerja</a>
             </div>
             <nav class="nav">
                 <ul>

@@ -33,7 +33,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lowongan Kerja - kerjaAja</title>
+    <title>Lowongan Kerja - BantuKerja</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -41,7 +41,7 @@ $stmt->close();
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo"><a href="dashboard.php">KerjaAja</a></div>
+            <div class="logo"><a href="dashboard.php">BantuKerja</a></div>
             <nav class="nav">
                 <ul>
                     <li><a href="profile.php" class="btn-logout"><i class="fas fa-user"></i> Profile</a></li>

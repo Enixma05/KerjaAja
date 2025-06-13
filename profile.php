@@ -2,6 +2,7 @@
 session_start();
 include 'koneksi.php';
 
+// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -13,12 +14,14 @@ $result_user = mysqli_query($conn, $query_user);
 $user_data = mysqli_fetch_assoc($result_user);
 if (!$user_data) { die("Data pengguna tidak ditemukan."); }
 
+// 2. Ambil data statistik
 $query_pelatihan_count = "SELECT COUNT(*) as total FROM pendaftaran_pelatihan WHERE user_id = '$user_id'";
 $total_pelatihan = mysqli_fetch_assoc(mysqli_query($conn, $query_pelatihan_count))['total'];
 
 $query_lamaran_count = "SELECT COUNT(*) as total FROM lamaran WHERE user_id = '$user_id'";
 $total_lamaran = mysqli_fetch_assoc(mysqli_query($conn, $query_lamaran_count))['total'];
 
+// 3. Ambil data untuk setiap tab
 $pendidikan_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM pendidikan WHERE user_id = '$user_id' ORDER BY tahun_lulus DESC"), MYSQLI_ASSOC);
 $pengalaman_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM pengalaman_kerja WHERE user_id = '$user_id' ORDER BY tanggal_mulai DESC"), MYSQLI_ASSOC);
 $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WHERE user_id = '$user_id'"), MYSQLI_ASSOC);
@@ -29,7 +32,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Saya - KerjaAja</title>
+    <title>Profil Saya - BantuKerja</title>
     <link rel="stylesheet" href="css/style.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
@@ -37,7 +40,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo"><a href="dashboard.php">KerjaAja</a></div>
+            <div class="logo"><a href="dashboard.php">BantuKerja</a></div>
             <nav class="nav">
                 <ul>
                     <li><a href="dashboard.php" class="btn-logout"><i class="fas fa-arrow-left"></i> Kembali ke
