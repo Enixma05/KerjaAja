@@ -1,10 +1,10 @@
 <?php
 session_start();
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 // Cek sesi login
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 $user_id = (int)$_SESSION['user_id'];
@@ -33,7 +33,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil Saya - BantuKerja</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../css/style.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
 
@@ -45,7 +45,8 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
                 <ul>
                     <li><a href="dashboard.php" class="btn-logout"><i class="fas fa-arrow-left"></i> Kembali ke
                             Dashboard</a></li>
-                    <li><a href="logout.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a href="../auth/logout.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
                 </ul>
             </nav>
         </div>

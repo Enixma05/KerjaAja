@@ -1,10 +1,10 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 // Cek sesi login
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -37,7 +37,7 @@ mysqli_close($conn);
     <header class="header">
       <div class="container">
         <div class="logo">
-          <a href="admin-dashboard.php">KerjaAja Perusahaan</a>
+          <a href="perusahaan-dashboard.php">KerjaAja Perusahaan</a>
         </div>
         <nav class="nav">
           <ul>
@@ -57,13 +57,13 @@ mysqli_close($conn);
         <nav class="sidebar-nav">
           <ul>
             <li>
-              <a href="admin-dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+              <a href="perusahaan-dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
             </li>
             <li>
-              <a href="admin-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
+              <a href="perusahaan-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
             </li>
             <li>
-              <a href="admin-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a>
+              <a href="perusahaan-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a>
             </li>
           </ul>
         </nav>

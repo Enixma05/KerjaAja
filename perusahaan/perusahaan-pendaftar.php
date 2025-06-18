@@ -1,10 +1,10 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -61,7 +61,7 @@ mysqli_close($conn);
     <header class="header">
         <div class="container">
             <div class="logo">
-                <a href="admin-dashboard.php">KerjaAja Perusahaaan</a>
+                <a href="perusahaan-dashboard.php">KerjaAja Perusahaaan</a>
             </div>
             <nav class="nav">
                 <ul>

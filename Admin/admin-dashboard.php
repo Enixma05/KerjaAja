@@ -1,9 +1,9 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -52,7 +52,6 @@ while ($row = $result->fetch_assoc()) {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -60,9 +59,9 @@ while ($row = $result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - KerjaAja</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/notifications.css">
-    <link rel="stylesheet" href="css/admin-notifications.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notifications.css">
+    <link rel="stylesheet" href="../css/admin-notifications.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -76,7 +75,7 @@ while ($row = $result->fetch_assoc()) {
             </div>
             <nav class="nav">
                 <ul>
-                    <li><a href="#" id="logoutBtn" class="btn-logout">
+                    <li><a href="../auth/logout.php" id="logoutBtn" class="btn-logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a></li>
                 </ul>
@@ -261,7 +260,7 @@ while ($row = $result->fetch_assoc()) {
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             if (confirm('Apakah Anda yakin ingin logout?')) {
-                window.location.href = 'logout.php';
+                window.location.href = '../auth/logout.php';
             }
         });
     });

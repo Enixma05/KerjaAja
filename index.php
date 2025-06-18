@@ -13,7 +13,7 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <a href="homePage.php">KerjaAja</a>
+                <a href="index.php">KerjaAja</a>
             </div>
         </div>
     </header>
@@ -29,11 +29,11 @@
                         pekerjaan dari perusahaan lokal.
                     </p>
                     <div class="hero-buttons">
-                        <a href="register.php" class="btn btn-primary">
+                        <a href="auth/register.php" class="btn btn-primary">
                             Daftar Sekarang
                             <i class="fas fa-arrow-right"></i>
                         </a>
-                        <a href="login.php" class="btn btn-outline">
+                        <a href="auth/login.php" class="btn btn-outline">
                             Login
                         </a>
                     </div>
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="features-grid">
-                <a href="login.php" class="feature-card">
+                <a href="auth/login.php" class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-book-open"></i>
                     </div>
@@ -65,7 +65,7 @@
                         <p>Akses berbagai pelatihan kerja untuk meningkatkan keterampilan Anda.</p>
                     </div>
                 </a>
-                <a href="login.php" class="feature-card">
+                <a href="auth/login.php" class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
@@ -74,7 +74,7 @@
                         <p>Temukan dan lamar pekerjaan dari perusahaan lokal yang sesuai dengan keahlian Anda.</p>
                     </div>
                 </a>
-                <a href="login.php" class="feature-card">
+                <a href="auth/login.php" class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
@@ -99,9 +99,9 @@
                 <div class="footer-links">
                     <p class="footer-title">Tautan</p>
                     <nav class="footer-nav">
-                        <a href="homePage.php">Beranda</a>
-                        <a href="login.php">Login</a>
-                        <a href="register.php">Register</a>
+                        <a href="index.php">Beranda</a>
+                        <a href="auth/login.php">Login</a>
+                        <a href="auth/register.php">Register</a>
                     </nav>
                 </div>
             </div>

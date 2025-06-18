@@ -1,10 +1,10 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -35,9 +35,9 @@ mysqli_close($conn);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Pendaftar - KerjaAja</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/notifications.css" />
-    <link rel="stylesheet" href="css/admin-notifications.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/notifications.css" />
+    <link rel="stylesheet" href="../css/admin-notifications.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
@@ -51,7 +51,8 @@ mysqli_close($conn);
             <nav class="nav">
                 <ul>
                     <li>
-                        <a href="#" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+                        <a href="../index.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i>
+                            Logout </a>
                     </li>
                 </ul>
             </nav>
@@ -89,7 +90,7 @@ mysqli_close($conn);
                     <button class="tab-btn active" data-tab="pelatihan">Pendaftar Pelatihan</button>
                 </div>
                 <div class="tab-content-profile">
-                    < class="tab-pane active" id="pelatihanTab">
+                    <class="tab-pane active" id="pelatihanTab">
                         <div class="search-container">
                             <div class="search-input">
                                 <i class="fas fa-search"></i>
@@ -122,10 +123,10 @@ mysqli_close($conn);
                                 </tbody>
                             </table>
                         </div>
-                    </div>
                 </div>
             </div>
-        </main>
+    </div>
+    </main>
     </div>
 
     <!-- Footer -->
@@ -277,7 +278,7 @@ mysqli_close($conn);
         // Setup logout button
         document.getElementById("logoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
-            window.location.href = "logout.php";
+            window.location.href = "../auth/logout.php";
         });
     });
     </script>

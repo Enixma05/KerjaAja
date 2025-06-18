@@ -1,9 +1,9 @@
 <?php
 session_start();
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php?pesan=harus_login");
+    header("Location: ../auth/login.php?pesan=harus_login");
     exit();
 }
 
@@ -76,7 +76,7 @@ $stmt->close();
             <nav class="nav">
                 <ul>
                     <li><a href="profile.php" class="btn-logout"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a href="logout.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a href="../auth/logout.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </nav>
         </div>

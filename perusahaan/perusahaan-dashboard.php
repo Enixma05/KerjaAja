@@ -1,9 +1,9 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -72,7 +72,7 @@ while ($row = $result->fetch_assoc()) {
     <header class="header">
         <div class="container">
             <div class="logo">
-                <a href="admin-dashboard.php">KerjaAja Perusahaan</a>
+                <a href="perusahaan-dashboard.php">KerjaAja Perusahaan</a>
             </div>
             <nav class="nav">
                 <ul>

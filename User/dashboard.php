@@ -1,9 +1,9 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -20,7 +20,7 @@ $result = mysqli_query($conn, $query);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - KerjaAja</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
@@ -33,11 +33,13 @@ $result = mysqli_query($conn, $query);
             <nav class="nav">
                 <ul>
                     <li>
-                        <a href="profile.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-user"></i> Profile
+                        <a href="profile.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-user"></i>
+                            Profile
                         </a>
                     </li>
                     <li>
-                        <a href="logout.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i>
+                        <a href="../auth/logout.php" id="logoutBtn" class="btn-logout"> <i
+                                class="fas fa-sign-out-alt"></i>
                             Logout </a>
                     </li>
                 </ul>

@@ -1,10 +1,10 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 // Cek sesi login
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -28,9 +28,9 @@ mysqli_close($conn);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manajemen Pelatihan - KerjaAja</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/notifications.css" />
-    <link rel="stylesheet" href="css/admin-notifications.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/notifications.css" />
+    <link rel="stylesheet" href="../css/admin-notifications.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
@@ -44,7 +44,8 @@ mysqli_close($conn);
             <nav class="nav">
                 <ul>
                     <li>
-                        <a href="#" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+                        <a href="../index.php" id="logoutBtn" class="btn-logout"> <i
+                                class="fas fa-sign-out-alt"></i>Logout </a>
                     </li>
                 </ul>
             </nav>
@@ -102,25 +103,27 @@ mysqli_close($conn);
                     </thead>
                     <tbody>
                         <?php if (count($dataPelatihan) > 0): ?>
-                            <?php foreach ($dataPelatihan as $pelatihan): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($pelatihan['nama']) ?></td>
-                                    <td><?= date("d/m/Y", strtotime($pelatihan['tanggal'])) ?></td>
-                                    <td><?= htmlspecialchars($pelatihan['lokasi']) ?></td>
-                                    <td><?= htmlspecialchars($pelatihan['kuota']) ?></td>
-                                    <td><?= htmlspecialchars($pelatihan['deskripsi']) ?></td>
-                                    <td class="text-right">
-                                        <div class="action-buttons">
-                                            <a href="edit_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>" class="edit-btn">Edit</a>
-                                            <a href="delete_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>" onclick="return confirm('Hapus data ini?')">Hapus</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                        <?php foreach ($dataPelatihan as $pelatihan): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($pelatihan['nama']) ?></td>
+                            <td><?= date("d/m/Y", strtotime($pelatihan['tanggal'])) ?></td>
+                            <td><?= htmlspecialchars($pelatihan['lokasi']) ?></td>
+                            <td><?= htmlspecialchars($pelatihan['kuota']) ?></td>
+                            <td><?= htmlspecialchars($pelatihan['deskripsi']) ?></td>
+                            <td class="text-right">
+                                <div class="action-buttons">
+                                    <a href="edit_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>"
+                                        class="edit-btn">Edit</a>
+                                    <a href="delete_pelatihan.php?id=<?= $pelatihan['pelatihan_id'] ?>"
+                                        onclick="return confirm('Hapus data ini?')">Hapus</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="6" style="text-align:center;">Belum ada data pelatihan.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" style="text-align:center;">Belum ada data pelatihan.</td>
+                        </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -157,7 +160,8 @@ mysqli_close($conn);
                 </div>
                 <div class="form-group">
                     <label for="description">Deskripsi</label>
-                    <textarea id="description" name="deskripsi" placeholder="Deskripsi pelatihan" rows="4" required></textarea>
+                    <textarea id="description" name="deskripsi" placeholder="Deskripsi pelatihan" rows="4"
+                        required></textarea>
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-outline" id="cancelTraining">Batal</button>
@@ -224,7 +228,7 @@ mysqli_close($conn);
         });
 
         document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 document.getElementById('modalTitle').innerText = "Edit Pelatihan";
                 document.getElementById('modalDescription').innerText = "Ubah detail pelatihan";
                 document.getElementById('trainingForm').action = "update_pelatihan.php";
@@ -249,7 +253,7 @@ mysqli_close($conn);
                 deleteModal.style.display = "block";
             });
         });
-        
+
 
 
 
@@ -331,7 +335,7 @@ mysqli_close($conn);
         // Setup logout button
         document.getElementById("logoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
-            window.location.href = "logut.php";
+            window.location.href = "../auth/logout.php";
         });
     });
     </script>

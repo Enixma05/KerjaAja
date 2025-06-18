@@ -1,9 +1,9 @@
 <?php session_start();?>
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ..login/login.php");
     exit();
 }
 
@@ -17,9 +17,9 @@ $user_id = $_SESSION['user_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notifikasi - KerjaAja</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/notifications.css">
-    <link rel="stylesheet" href="css/notifications-page.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notifications.css">
+    <link rel="stylesheet" href="../css/notifications-page.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -51,7 +51,7 @@ $user_id = $_SESSION['user_id'];
                     <li><a href="profile.php" class="btn-logout">
                             <i class="fas fa-user"></i> Profile
                         </a></li>
-                    <li><a href="logout.php" id="logoutBtn" class="btn-logout">
+                    <li><a href="../login/logout.php" id="logoutBtn" class="btn-logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a></li>
                 </ul>
