@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($password == $user_valid['password']) {
             $_SESSION['user_id'] = $user_valid['user_id'];
             $_SESSION['name'] = $user_valid['name'];
+            $_SESSION['role'] = $user_valid['role'];
 
             $user_id = $user_valid['id'];
             if ($user_id) {
@@ -22,9 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $_SESSION['profile'] = null;
             }
-
-            if ($email == "admin@gmail.com" && $password== "admin") {
+            $role = $user_valid['role'];
+            if ($role == 'admin') {
                 header("location: ../admin/admin-dashboard.php");
+            } else if ($role == 'perusahaan') {
+                header("location: ../perusahaan/perusahaan-dashboard.php");
             } else {
                 header("location: ../user/dashboard.php");
             }
