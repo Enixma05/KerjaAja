@@ -7,7 +7,7 @@ $role = $_POST['role'];
 $password = $_POST['password'];
 
 
-$check = "SELECT * FROM users WHERE email='$email' OR name='$name'";
+$check = "SELECT * FROM users WHERE email='$email'";
 $result = mysqli_query($conn, $check);
 
 if (mysqli_num_rows($result) > 0) {

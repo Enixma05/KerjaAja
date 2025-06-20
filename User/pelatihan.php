@@ -41,10 +41,39 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelatihan - BantuKerja</title>
+    <title>Pelatihan - KerjaAja</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+    .search-form {
+        display: flex;
+        gap: 10px;
+    }
+        
+    .training-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    }
+
+    .training-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .register-btn {
+        align-self: stretch;
+        margin-top: auto;
+        padding: 10px;
+    }
+
     .register-btn:disabled {
         background-color: #28a745;
         border-color: #28a745;
@@ -52,10 +81,8 @@ $result = $stmt->get_result();
         opacity: 0.8;
     }
 
-    .search-form {
-        display: flex;
-        gap: 10px;
-    }
+
+        
     </style>
 </head>
 
@@ -63,7 +90,7 @@ $result = $stmt->get_result();
     <header class="header">
         <div class="container">
             <div class="logo">
-                <a href="dashboard.php">BantuKerja</a>
+                <a href="dashboard.php">KerjaAja</a>
             </div>
             <nav class="nav">
                 <ul>
@@ -112,7 +139,7 @@ $result = $stmt->get_result();
                         $nama = htmlspecialchars($row['nama']);
                         $kuota = htmlspecialchars($row['kuota']);
                         $lokasi = htmlspecialchars($row['lokasi']);
-                        $deskripsi_singkat = htmlspecialchars(substr($row['deskripsi'], 0, 120)) . '...';
+                        $deskripsi_singkat = htmlspecialchars(substr($row['deskripsi'], 0, 200)) . '...';
                         $tanggal_formatted = date('d F Y', strtotime($row['tanggal']));
                 ?>
                 <div class="training-item">

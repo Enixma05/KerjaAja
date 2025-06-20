@@ -57,10 +57,6 @@ img {
   padding: 0 1rem;
 }
 
-.hidden {
-  display: none !important;
-}
-
 .text-center {
   text-align: center;
 }
@@ -154,6 +150,7 @@ p {
 .btn-block {
   display: block;
   width: 100%;
+
 }
 
 .btn-sm {
@@ -660,153 +657,6 @@ p {
   box-shadow: 0 0 0 2px var(--primary-light);
 }
 
-/* Training and Job Cards */
-.recent-trainings {
-  background-color: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  padding: 1.5rem;
-}
-
-.recent-trainings h2 {
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-}
-
-.training-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.training-item {
-  border: 1px solid var(--gray-200);
-  border-radius: var(--border-radius);
-  padding: 1rem;
-}
-
-.training-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.training-header h3 {
-  font-size: 1rem;
-}
-
-.badge {
-  background-color: var(--primary-light);
-  color: var(--primary-color);
-  padding: 0.25rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.training-details {
-  color: var(--gray-500);
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-}
-
-.training-description {
-  color: var(--gray-600);
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
-}
-
-.training-grid,
-.job-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.training-card,
-.job-card {
-  background-color: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  overflow: hidden;
-}
-
-.training-image {
-  height: 150px;
-  background-color: var(--primary-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.training-image i {
-  font-size: 3rem;
-  color: var(--primary-color);
-}
-
-.training-content,
-.job-card {
-  padding: 1.5rem;
-}
-
-.training-content h3,
-.job-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.training-details,
-.job-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.training-details p,
-.job-details p {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--gray-600);
-  font-size: 0.875rem;
-  margin-bottom: 0;
-}
-
-.job-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-}
-
-.job-company {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--gray-600);
-  font-size: 0.875rem;
-}
-
-.job-description {
-  color: var(--gray-600);
-  font-size: 0.875rem;
-  margin-bottom: 1.5rem;
-}
-
-.no-results {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-.no-results h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.no-results p {
-  color: var(--gray-600);
-}
 
 /* Tabs */
 .tabs {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BantuKerja - Tingkatkan Keterampilan, Dapatkan Pekerjaan</title>
+    <title>KerjaAja - Tingkatkan Keterampilan, Dapatkan Pekerjaan</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -51,7 +51,7 @@
             <div class="features-header">
                 <div class="section-title">
                     <h2>Fitur Utama</h2>
-                    <p>BantuKerja menyediakan berbagai fitur untuk membantu Anda mendapatkan pelatihan dan pekerjaan
+                    <p>KerjaAja menyediakan berbagai fitur untuk membantu Anda mendapatkan pelatihan dan pekerjaan
                         yang sesuai.</p>
                 </div>
             </div>
@@ -92,7 +92,7 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="brand">
-                        <span>BantuKerja</span>
+                        <span>KerjaAja</span>
                     </div>
                     <p class="footer-description">Platform pendaftaran pelatihan & penyaluran kerja warga lokal.</p>
                 </div>
@@ -106,7 +106,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 BantuKerja. Hak Cipta Dilindungi.</p>
+                <p>&copy; 2025 KerjaAja. Hak Cipta Dilindungi.</p>
             </div>
         </div>
     </footer>

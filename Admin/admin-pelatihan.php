@@ -58,15 +58,10 @@ mysqli_close($conn);
         <aside class="sidebar">
             <nav class="sidebar-nav">
                 <ul>
-                    <li>
-                        <a href="admin-dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="admin-pelatihan.php" class="active"><i class="fas fa-book"></i> Pelatihan</a>
-                    </li>
-                    <li>
-                        <a href="admin-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a>
-                    </li>
+                    <li><a href="admin-dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="admin-pelatihan.php" class="active"><i class="fas fa-book"></i> Pelatihan</a></li>
+                    <li><a href="admin-perusahaan.php"><i class="fas fa-building"></i> Perusahaan</a></li>
+                    <li><a href="admin-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a></li>
                 </ul>
             </nav>
         </aside>

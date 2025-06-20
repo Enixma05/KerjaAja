@@ -100,7 +100,7 @@ while ($row = $result->fetch_assoc()) {
         <!-- Main Content -->
         <main class="main-content">
             <div class="page-header">
-                <h1>Dashboard Perusahaan</h1>
+                <h1>Dashboard Perusahaan <span id="name"><?php echo htmlspecialchars($_SESSION['name']); ?></span></h1>
                 <p>Pantau statistik dan data KerjaAja</p>
             </div>
 

@@ -32,7 +32,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Saya - BantuKerja</title>
+    <title>Profil Saya - KerjaAja</title>
     <link rel="stylesheet" href="../css/style.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
@@ -40,7 +40,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo"><a href="dashboard.php">BantuKerja</a></div>
+            <div class="logo"><a href="dashboard.php">KerjaAja</a></div>
             <nav class="nav">
                 <ul>
                     <li><a href="dashboard.php" class="btn-logout"><i class="fas fa-arrow-left"></i> Kembali ke
@@ -179,6 +179,26 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-section">
+                                <h3>Riwayat Pendidikan</h3>
+                                <?php if (count($pendidikan_list) > 0): ?>
+                                    <ul class="education-list">
+                                        <?php foreach ($pendidikan_list as $edu): ?>
+                                            <li>
+                                                <strong><?php echo htmlspecialchars($edu['jenjang']); ?></strong> di 
+                                                <?php echo htmlspecialchars($edu['institusi']); ?>, 
+                                                Jurusan <?php echo htmlspecialchars($edu['jurusan']); ?> 
+                                                (Lulus: <?php echo htmlspecialchars($edu['tahun_lulus']); ?>)
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php else: ?>
+                                    <p>Belum ada riwayat pendidikan yang ditambahkan.</p>
+                                <?php endif; ?>
+                                <a href="kelola_pendidikan.php" class="btn btn-secondary btn-sm"><i class="fas fa-plus"></i> Kelola Pendidikan</a>
+                            </div>
+                                                            
                             <div class="form-actions"><button type="submit" class="btn btn-primary"><i
                                         class="fas fa-save"></i> Simpan Perubahan</button></div>
                         </form>

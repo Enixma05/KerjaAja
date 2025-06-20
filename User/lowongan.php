@@ -33,15 +33,50 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lowongan Kerja - BantuKerja</title>
+    <title>Lowongan Kerja - KerjaAja</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+    <style>
+    .job-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    }
+
+    .job-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+   
+    .job-card-description {
+        margin-bottom: 60px;
+    }
+
+    .job-card-description {
+        flex-grow: 2;
+    }
+
+    .job-card .btn {
+        margin-top: auto;
+        align-self: stretch;
+        padding: 10px;
+    }
+
+    </style>
+</head> 
 
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo"><a href="dashboard.php">BantuKerja</a></div>
+            <div class="logo"><a href="dashboard.php">KerjaAja</a></div>
             <nav class="nav">
                 <ul>
                     <li><a href="profile.php" class="btn-logout"><i class="fas fa-user"></i> Profile</a></li>
@@ -82,8 +117,6 @@ $stmt->close();
             </div>
 
             <div id="noResults" class="no-results hidden">
-                <h3>Tidak ada lowongan yang ditemukan</h3>
-                <p>Coba cari dengan kata kunci lain.</p>
             </div>
         </main>
     </div>
@@ -135,7 +168,7 @@ $stmt->close();
                         <p><i class="fas fa-map-marker-alt"></i> ${job.lokasi}</p>
                         <p><i class="fas fa-calendar-times"></i> Deadline: ${deadline}</p>
                     </div>
-                    <p class="job-card-description">${job.kualifikasi.substring(0, 100)}...</p>
+                    <p class="job-card-description">${job.kualifikasi.substring(0, 200)}...</p>
                     <a href="lamaran.php?id=${job.lowongan_id}" class="btn btn-primary btn-block">Lamar</a>
                 `;
                 jobGrid.appendChild(card);
