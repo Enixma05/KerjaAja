@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_stmt_bind_param($stmt, "ssssssi", $judul, $perusahaan, $deskripsi, $lokasi, $batas_lamaran, $kualifikasi, $id);
     
     if (mysqli_stmt_execute($stmt)) {
-        header("Location: admin-lowongan.php?update=success");
+        header("Location: perusahaan-lowongan.php?update=success");
     } else {
         echo "Gagal memperbarui data.";
     }

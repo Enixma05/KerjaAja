@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $judul = $_POST['judul'];
@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
               VALUES ('$judul', '$perusahaan', '$deskripsi', '$lokasi', '$batas_lamaran', '$kualifikasi')";
     
     if (mysqli_query($conn, $query)) {
-        header("Location: admin-lowongan.php?status=sukses");
+        header("Location: perusahaan-lowongan.php?status=sukses");
     } else {
         echo "Gagal: " . mysqli_error($conn);
     }

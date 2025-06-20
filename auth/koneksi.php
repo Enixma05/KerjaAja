@@ -2,7 +2,7 @@
 $host     = "localhost";
 $user     = "root";
 $password = "";
-$database = "kerja_aja_backend"; 
+$database = "kerja_aja"; 
 
 
 $conn = new mysqli($host, $user, $password, $database);
