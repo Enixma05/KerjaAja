@@ -8,15 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-
-// Total lowongan
-$q1 = $conn->query("SELECT COUNT(*) as total_lowongan FROM lowongan");
-$total_lowongan = $q1->fetch_assoc()['total_lowongan'];
-
-// Total lamaran
-$q2 = $conn->query("SELECT COUNT(*) as total_lamaran FROM lamaran");
-$total_lamaran = $q2->fetch_assoc()['total_lamaran'];
-
 // Total pelatihan
 $q3 = $conn->query("SELECT COUNT(*) as total_pelatihan FROM pelatihan");
 $total_pelatihan = $q3->fetch_assoc()['total_pelatihan'];
@@ -136,7 +127,7 @@ while ($row = $result->fetch_assoc()) {
                     </div>
                 </div>
             </div>
-
+<!-- 
             <div class="recent-activities">
                 <h2>Aktivitas Terbaru</h2>
                 <div class="activities-list">
@@ -183,7 +174,7 @@ while ($row = $result->fetch_assoc()) {
                 </div>
             </div>
         </main>
-    </div>
+    </div> -->
 
     <!-- Footer -->
     <footer class="footer">

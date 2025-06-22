@@ -29,8 +29,6 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manajemen Pelatihan - KerjaAja</title>
     <link rel="stylesheet" href="../css/style.css" />
-    <link rel="stylesheet" href="../css/notifications.css" />
-    <link rel="stylesheet" href="../css/admin-notifications.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
@@ -160,7 +158,9 @@ mysqli_close($conn);
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-outline" id="cancelTraining">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
                 </div>
             </form>
         </div>
@@ -188,152 +188,67 @@ mysqli_close($conn);
         </div>
     </footer>
 
-    <script src="js/data.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/notifications.js"></script>
-    <script src="js/admin-notifications.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const trainingTable = document.getElementById("trainingTable").querySelector("tbody");
-        const searchInput = document.getElementById("searchTraining");
-        const addTrainingBtn = document.getElementById("addTrainingBtn");
-        const trainingModal = document.getElementById("trainingModal");
-        const deleteModal = document.getElementById("deleteModal");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalDescription = document.getElementById("modalDescription");
-        const trainingForm = document.getElementById("trainingForm");
-        const trainingIdInput = document.getElementById("trainingId");
-        const nameInput = document.getElementById("name");
-        const dateInput = document.getElementById("date");
-        const locationInput = document.getElementById("location");
-        const quotaInput = document.getElementById("quota");
-        const descriptionInput = document.getElementById("description");
+    <script src="../js/main.js"></script>
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const addTrainingBtn = document.getElementById("addTrainingBtn");
+            const trainingModal = document.getElementById("trainingModal");
+            const deleteModal = document.getElementById("deleteModal");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalDescription = document.getElementById("modalDescription");
+            const trainingForm = document.getElementById("trainingForm");
+            const trainingIdInput = document.getElementById("trainingId");
+            const nameInput = document.getElementById("name");
+            const dateInput = document.getElementById("date");
+            const locationInput = document.getElementById("location");
+            const quotaInput = document.getElementById("quota");
+            const descriptionInput = document.getElementById("description");
 
-        let selectedTrainingId = null;
+            // ✅ Fungsi saat tombol "Tambah Pelatihan" ditekan
+            addTrainingBtn.addEventListener("click", function () {
+                modalTitle.innerText = "Tambah Pelatihan Baru";
+                modalDescription.innerText = "Isi form berikut untuk menambahkan pelatihan baru";
+                trainingForm.action = "tambah_pelatihan.php";
 
-
-        // Search functionality
-        searchInput.addEventListener("input", function() {
-            const searchTerm = this.value.toLowerCase();
-            const filteredTrainings = mockAdminTrainings.filter((training) => training.name
-                .toLowerCase().includes(searchTerm) || training.location.toLowerCase().includes(
-                    searchTerm));
-
-            displayTrainings(filteredTrainings);
-        });
-
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                document.getElementById('modalTitle').innerText = "Edit Pelatihan";
-                document.getElementById('modalDescription').innerText = "Ubah detail pelatihan";
-                document.getElementById('trainingForm').action = "update_pelatihan.php";
-
-                // Isi form dengan data dari tombol
-                document.getElementById('trainingId').value = this.dataset.id;
-                document.getElementById('name').value = this.dataset.nama;
-                document.getElementById('date').value = this.dataset.tanggal;
-                document.getElementById('location').value = this.dataset.lokasi;
-                document.getElementById('quota').value = this.dataset.kuota;
-                document.getElementById('description').value = this.dataset.deskripsi;
-
-                // Tampilkan modal
-                document.getElementById('trainingModal').style.display = "block";
-            });
-        });
-
-
-        document.querySelectorAll(".delete-btn").forEach((button) => {
-            button.addEventListener("click", function() {
-                selectedTrainingId = this.getAttribute("data-id");
-                deleteModal.style.display = "block";
-            });
-        });
-
-
-
-
-
-        // Open edit training modal
-        function openEditModal(trainingId) {
-            const training = mockAdminTrainings.find((t) => t.id == trainingId);
-
-            if (training) {
-                modalTitle.textContent = "Edit Pelatihan";
-                modalDescription.textContent = "Edit informasi pelatihan";
-
-                trainingIdInput.value = training.id;
-                nameInput.value = training.name;
-                dateInput.value = training.date;
-                locationInput.value = training.location;
-                quotaInput.value = training.quota;
-                descriptionInput.value = training.description;
+                // Kosongkan form
+                trainingIdInput.value = "";
+                nameInput.value = "";
+                dateInput.value = "";
+                locationInput.value = "";
+                quotaInput.value = "";
+                descriptionInput.value = "";
 
                 trainingModal.style.display = "block";
-            }
-        }
+            });
 
-        // Handle form submission
-        trainingForm.addEventListener("submit", function(e) {
+            // Tombol batal / close modal
+            document.querySelectorAll(".close-modal").forEach((btn) => {
+                btn.addEventListener("click", function () {
+                    trainingModal.style.display = "none";
+                    deleteModal.style.display = "none";
+                });
+            });
 
-            // Validate form
-            if (!nameInput.value || !dateInput.value || !locationInput.value || !quotaInput.value || !
-                descriptionInput.value) {
-                alert("Semua field harus diisi");
-                return;
-            }
-
-            // In a real app, this would send data to a server
-            if (trainingIdInput.value) {
-                // Editing existing training
-                alert("Pelatihan berhasil diperbarui!");
-            } else {
-                // Adding new training
-                alert("Pelatihan baru berhasil ditambahkan!");
-            }
-
-            trainingModal.style.display = "none";
-        });
-
-        // Handle delete confirmation
-        document.getElementById("confirmDelete").addEventListener("click", function() {
-            // In a real app, this would send a delete request to a server
-            alert("Pelatihan berhasil dihapus!");
-            deleteModal.style.display = "none";
-        });
-
-        // Close modals
-        document.querySelectorAll(".close-modal").forEach((closeBtn) => {
-            closeBtn.addEventListener("click", function() {
+            document.getElementById("cancelTraining").addEventListener("click", function () {
                 trainingModal.style.display = "none";
+            });
+
+            document.getElementById("cancelDelete").addEventListener("click", function () {
                 deleteModal.style.display = "none";
             });
-        });
 
-        document.getElementById("cancelTraining").addEventListener("click", function() {
-            trainingModal.style.display = "none";
-        });
+            window.addEventListener("click", function (event) {
+                if (event.target === trainingModal) trainingModal.style.display = "none";
+                if (event.target === deleteModal) deleteModal.style.display = "none";
+            });
 
-        document.getElementById("cancelDelete").addEventListener("click", function() {
-            deleteModal.style.display = "none";
+            // Logout
+            document.getElementById("logoutBtn").addEventListener("click", function (e) {
+                e.preventDefault();
+                window.location.href = "../auth/logout.php";
+            });
         });
-
-        // Close modals when clicking outside
-        window.addEventListener("click", function(event) {
-            if (event.target === trainingModal) {
-                trainingModal.style.display = "none";
-            }
-            if (event.target === deleteModal) {
-                deleteModal.style.display = "none";
-            }
-        });
-
-        // Setup logout button
-        document.getElementById("logoutBtn").addEventListener("click", function(e) {
-            e.preventDefault();
-            window.location.href = "../auth/logout.php";
-        });
-    });
-    </script>
+        </script>
 </body>
 
 </html>

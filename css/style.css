@@ -2303,3 +2303,8 @@ p {
   align-items: flex-start;
   gap: 30px;
 }
+
+.btn {
+    pointer-events: auto !important;
+    z-index: 1000;
+}
