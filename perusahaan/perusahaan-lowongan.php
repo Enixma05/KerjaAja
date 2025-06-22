@@ -271,7 +271,7 @@ mysqli_close($conn);
 
         document.getElementById("logoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
-            window.location.href = "logout.php";
+            window.location.href = "../auth/logout.php";
         });
     });
     </script>
