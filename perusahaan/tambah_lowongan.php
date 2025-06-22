@@ -8,10 +8,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $lokasi = $_POST['lokasi'];
     $batas_lamaran = $_POST['batas_lamaran'];
     $kualifikasi = $_POST['kualifikasi'];
+    $pendidikan = $_POST['pendidikan']; // ✅ Tambahan field pendidikan
 
-    $query = "INSERT INTO lowongan (judul, perusahaan, deskripsi, lokasi, batas_lamaran, kualifikasi) 
-              VALUES ('$judul', '$perusahaan', '$deskripsi', '$lokasi', '$batas_lamaran', '$kualifikasi')";
-    
+    // Gunakan prepared statement agar lebih aman (opsional tapi direkomendasikan)
+    $query = "INSERT INTO lowongan (judul, perusahaan, deskripsi, lokasi, batas_lamaran, kualifikasi, pendidikan) 
+              VALUES ('$judul', '$perusahaan', '$deskripsi', '$lokasi', '$batas_lamaran', '$kualifikasi', '$pendidikan')";
+
     if (mysqli_query($conn, $query)) {
         header("Location: perusahaan-lowongan.php?status=sukses");
     } else {

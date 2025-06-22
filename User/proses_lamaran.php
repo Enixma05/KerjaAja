@@ -31,7 +31,7 @@ if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
     if ($file_size > 2 * 1024 * 1024) { 
         die("Error: Ukuran file CV tidak boleh lebih dari 2MB.");
     }
-
+    
     if (move_uploaded_file($_FILES['cv']['tmp_name'], $target_file)) {
         $cv_path = $target_file;
     } else {

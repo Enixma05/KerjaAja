@@ -44,31 +44,6 @@ mysqli_close($conn);
             </div>
             <nav class="nav">
                 <ul>
-                    <!-- Admin Notifications -->
-                    <li class="notification-dropdown">
-                        <div class="notification-menu" id="adminNotificationMenu">
-                            <div class="notification-header">
-                                <h4>Notifikasi Admin</h4>
-                                <button class="mark-all-read" id="adminMarkAllRead">
-                                    <i class="fas fa-check-double"></i>
-                                    Tandai Semua Dibaca
-                                </button>
-                            </div>
-                            <div class="notification-list" id="adminNotificationList">
-                                <!-- Admin notifications will be populated by JavaScript -->
-                            </div>
-                            <div class="notification-footer">
-                                <a href="admin-notifications.php" id="viewAllAdminNotifications">Lihat Semua
-                                    Notifikasi</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- <li>
-                        <button class="btn btn-primary" id="sendNotificationBtn"><i class="fas fa-paper-plane"></i>
-                            Kirim Notifikasi</button>
-                    </li> -->
-
                     <li>
                         <a href="../index.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
                     </li>
@@ -182,6 +157,17 @@ mysqli_close($conn);
                         <option value="Part Time">Part Time</option>
                         <option value="Freelance">Freelance</option>
                         <option value="Kontrak">Kontrak</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lowonganPendidikan">Pendidikan</label>
+                    <select id="lowonganPendidikan" name="pendidikan" required>
+                        <option value="">-- Pilih Pendidikan --</option>
+                        <option value="SMA/SMK">SMA/SMK</option>
+                        <option value="Diploma (D1/D2/D3)">Diploma (D1/D2/D3)</option>
+                        <option value="Sarjana (S1)">Sarjana (S1)</option>
+                        <option value="Magister (S2)">Magister (S2)</option>
+                        <option value="Doktor (S3)">Doktor (S3)</option>
                     </select>
                 </div>
                 <div class="form-group">
