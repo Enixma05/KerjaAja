@@ -9,38 +9,26 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Total lowongan
-$q1 = $conn->query("SELECT COUNT(*) as total_lowongan FROM lowongan");
+//query untuk mendapatkan data lamaran
+$q1 = $conn->query("SELECT COUNT(*) as total_lowongan FROM lowongan WHERE created_by = $user_id");
 $total_lowongan = $q1->fetch_assoc()['total_lowongan'];
 
-// Total lamaran
-$q2 = $conn->query("SELECT COUNT(*) as total_lamaran FROM lamaran");
+$q2 = $conn->query("SELECT COUNT(*) as total_lamaran 
+                    FROM lamaran l
+                    JOIN lowongan lw ON l.lowongan_id = lw.lowongan_id
+                    WHERE lw.created_by = $user_id");
 $total_lamaran = $q2->fetch_assoc()['total_lamaran'];
 
-// Total pelatihan
-$q3 = $conn->query("SELECT COUNT(*) as total_pelatihan FROM pelatihan");
-$total_pelatihan = $q3->fetch_assoc()['total_pelatihan'];
-
-// Total peserta pelatihan
-$q4 = $conn->query("SELECT COUNT(*) as total_peserta FROM pendaftaran_pelatihan");
-$total_peserta = $q4->fetch_assoc()['total_peserta'];
-
-$trainingCounts = array_fill_keys(['Jan','Feb','Mar','Apr','Mei','Jun','Jul'], 0);
-
-$sql = "SELECT MONTH(tanggal) AS bulan, COUNT(*) AS jumlah FROM pelatihan GROUP BY bulan";
-$result = $conn->query($sql);
-
-while ($row = $result->fetch_assoc()) {
-    $monthIndex = (int)$row['bulan'];
-    $monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun', 'Jul'];
-    if ($monthIndex >= 1 && $monthIndex <= 7) {
-        $trainingCounts[$monthNames[$monthIndex - 1]] = (int)$row['jumlah'];
-    }
-}
-
+//query untuk statistik lamaran
 $statusCounts = ['Diterima' => 0, 'Ditolak' => 0, 'Menunggu review' => 0];
 
-$sql = "SELECT status, COUNT(*) AS jumlah FROM lamaran GROUP BY status";
+$sql = "
+    SELECT l.status, COUNT(*) AS jumlah
+    FROM lamaran l
+    JOIN lowongan lw ON l.lowongan_id = lw.lowongan_id
+    WHERE lw.created_by = $user_id
+    GROUP BY l.status";
+
 $result = $conn->query($sql);
 
 while ($row = $result->fetch_assoc()) {
@@ -50,6 +38,30 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 
+//query untuk aktivitas terbaru
+$aktivitasTerbaru = null;
+$queryAktivitas = "
+    SELECT u.name AS nama_pelamar, lwn.judul AS posisi, lwn.perusahaan, l.tanggal_lamar
+    FROM lamaran l
+    JOIN users u ON l.user_id = u.user_id
+    JOIN lowongan lwn ON l.lowongan_id = lwn.lowongan_id
+    WHERE lwn.created_by = $user_id
+    ORDER BY l.tanggal_lamar DESC
+    LIMIT 1";
+
+$resultAktivitas = $conn->query($queryAktivitas);
+
+if ($row = $resultAktivitas->fetch_assoc()) {
+    $aktivitasTerbaru = $row;
+}
+
+function waktuRelatif($timestamp) {
+    $selisih = time() - strtotime($timestamp);
+    if ($selisih < 60) return $selisih . ' detik yang lalu';
+    if ($selisih < 3600) return floor($selisih / 60) . ' menit yang lalu';
+    if ($selisih < 86400) return floor($selisih / 3600) . ' jam yang lalu';
+    return date('d M Y, H:i', strtotime($timestamp));
+}
 ?>
 
 
@@ -76,7 +88,7 @@ while ($row = $result->fetch_assoc()) {
             </div>
             <nav class="nav">
                 <ul>
-                    <li><a href="#" id="logoutBtn" class="btn-logout">
+                    <li><a href="../index.php" id="logoutBtn" class="btn-logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a></li>
                 </ul>
@@ -92,7 +104,7 @@ while ($row = $result->fetch_assoc()) {
                 <ul>
                     <li><a href="perusahaan-dashboard.php" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="perusahaan-lowongan.php"><i class="fas fa-briefcase"></i> Lowongan Kerja</a></li>
-                    <li><a href="perusahaan-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a></li>
+                    <li><a href="perusahaan-pendaftar.php"><i class="fas fa-users"></i> Data Pelamar</a></li>
                 </ul>
             </nav>
         </aside>
@@ -129,13 +141,50 @@ while ($row = $result->fetch_assoc()) {
 
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3>Status Lamaran</h3>
-                    <p>Distribusi status lamaran kerja</p>
-                    <div class="chart-container">
-                        <canvas id="applicationChart"></canvas>
+                    <h3>Statistik Lamaran Kerja</h3>
+                    <p>Status lamaran yang masuk</p>
+                    <div class="chart-container" style="height:300px;">
+                        <canvas id="lamaranStatusChart"></canvas>
                     </div>
                 </div>
             </div>
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const lamaranStatusCtx = document.getElementById('lamaranStatusChart').getContext('2d');
+
+                const lamaranStatusChart = new Chart(lamaranStatusCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Diterima', 'Ditolak', 'Menunggu review'],
+                        datasets: [{
+                            label: 'Jumlah Lamaran',
+                            data: <?= json_encode(array_values($statusCounts)); ?>,
+                            backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            });
+            </script>
+
+
 
             <div class="recent-activities">
                 <h2>Aktivitas Terbaru</h2>
@@ -144,12 +193,15 @@ while ($row = $result->fetch_assoc()) {
                         <div class="activity-icon amber">
                             <i class="fas fa-briefcase"></i>
                         </div>
-                        <div class="activity-content">
-                            <h4>Lamaran Kerja Baru</h4>
-                            <p>Ani Wijaya melamar posisi Customer Service Representative di PT Maju Bersama</p>
-                        </div>
-                        <div class="activity-time">30 menit yang lalu</div>
-                    </div>
+                        <?php if ($aktivitasTerbaru): ?>
+                            <div class="activity-content">
+                                <h4>Lamaran Kerja Baru</h4>
+                                <p><?= htmlspecialchars($aktivitasTerbaru['nama_pelamar']) ?> melamar posisi <?= htmlspecialchars($aktivitasTerbaru['posisi']) ?> di <?= htmlspecialchars($aktivitasTerbaru['perusahaan']) ?></p>
+                            </div>
+                                <div class="activity-time"><?= waktuRelatif($aktivitasTerbaru['tanggal_lamar']) ?></div>
+                        <?php else: ?>
+                            <p style="padding: 10px;">Belum ada aktivitas terbaru.</p>
+                        <?php endif; ?>
                 </div>
             </div>
         </main>

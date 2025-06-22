@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 $datalowongan = [];
-$query = "SELECT * FROM lowongan ORDER BY batas_lamaran DESC";
+$query = "SELECT * FROM lowongan WHERE created_by = $user_id ORDER BY batas_lamaran DESC";
 $result = mysqli_query($conn, $query);
 
 if ($result && mysqli_num_rows($result) > 0) {
@@ -20,6 +20,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 }
 mysqli_close($conn);
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -39,7 +40,7 @@ mysqli_close($conn);
     <header class="header">
         <div class="container">
             <div class="logo">
-                <a href="admin-dashboard.php">KerjaAja Admin</a>
+                <a href="perusahaan-dashboard.php">KerjaAja Perusahaan</a>
             </div>
             <nav class="nav">
                 <ul>
@@ -63,92 +64,18 @@ mysqli_close($conn);
                         </div>
                     </li>
 
-                    <li>
+                    <!-- <li>
                         <button class="btn btn-primary" id="sendNotificationBtn"><i class="fas fa-paper-plane"></i>
                             Kirim Notifikasi</button>
-                    </li>
+                    </li> -->
 
                     <li>
-                        <a href="#" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+                        <a href="../index.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
                     </li>
                 </ul>
             </nav>
         </div>
     </header>
-
-    <!-- Notification Toast Container -->
-    <div id="toastContainer" class="toast-container"></div>
-
-    <!-- Send Notification Modal -->
-    <div id="sendNotificationModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeSendModal">&times;</span>
-            <h2>Kirim Notifikasi</h2>
-            <p>Kirim notifikasi ke pengguna platform</p>
-
-            <form id="sendNotificationForm">
-                <div class="form-group">
-                    <label for="notificationType">Jenis Notifikasi</label>
-                    <select id="notificationType" required>
-                        <option value="">Pilih Jenis</option>
-                        <option value="info">Informasi</option>
-                        <option value="success">Berhasil</option>
-                        <option value="warning">Peringatan</option>
-                        <option value="error">Error</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="notificationTarget">Target Penerima</label>
-                    <select id="notificationTarget" required>
-                        <option value="">Pilih Target</option>
-                        <option value="all">Semua Pengguna</option>
-                        <option value="active">Pengguna Aktif</option>
-                        <option value="training">Peserta Pelatihan</option>
-                        <option value="job_seekers">Pencari Kerja</option>
-                        <option value="specific">Pengguna Tertentu</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="specificUsersGroup" style="display: none">
-                    <label for="specificUsers">Email Pengguna (pisahkan dengan koma)</label>
-                    <textarea id="specificUsers" rows="3" placeholder="user1@email.com, user2@email.com"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="notificationTitle">Judul Notifikasi</label>
-                    <input type="text" id="notificationTitle" required placeholder="Masukkan judul notifikasi" />
-                </div>
-
-                <div class="form-group">
-                    <label for="notificationMessage">Pesan</label>
-                    <textarea id="notificationMessage" rows="4" required
-                        placeholder="Masukkan pesan notifikasi"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="notificationAction">Action URL (opsional)</label>
-                    <input type="url" id="notificationAction" placeholder="https://example.com" />
-                </div>
-
-                <div class="form-group">
-                    <label for="scheduleNotification"> <input type="checkbox" id="scheduleNotification" /> Jadwalkan
-                        Notifikasi </label>
-                </div>
-
-                <div class="form-group" id="scheduleGroup" style="display: none">
-                    <label for="scheduleDateTime">Tanggal & Waktu</label>
-                    <input type="datetime-local" id="scheduleDateTime" />
-                </div>
-
-                <div class="modal-buttons">
-                    <button type="button" id="cancelSendNotification" class="btn btn-outline">Batal</button>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Kirim
-                        Notifikasi</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Dashboard Content -->
     <div class="dashboard-container">
@@ -157,19 +84,13 @@ mysqli_close($conn);
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-                        <a href="admin-dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+                        <a href="perusahaan-dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="admin-pelatihan.php"><i class="fas fa-book"></i> Pelatihan</a>
+                        <a href="perusahaan-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
                     </li>
                     <li>
-                        <a href="admin-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
-                    </li>
-                    <li>
-                        <a href="admin-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a>
-                    </li>
-                    <li>
-                        <a href="admin-notifications.php"><i class="fas fa-bell"></i> Kelola Notifikasi</a>
+                        <a href="perusahaan-pendaftar.php"><i class="fas fa-users"></i> Data Pelamar</a>
                     </li>
                 </ul>
             </nav>
@@ -228,7 +149,7 @@ mysqli_close($conn);
                         <?php endforeach; ?>
                         <?php else: ?>
                         <tr>
-                            <td colspan="6" style="text-align:center;">Belum ada data pelatihan.</td>
+                            <td colspan="6" style="text-align:center;">Belum ada lowongan.</td>
                         </tr>
                         <?php endif; ?>
                     </tbody>

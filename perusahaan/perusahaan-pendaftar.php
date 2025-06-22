@@ -1,7 +1,6 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <?php
 include '../auth/koneksi.php';
-
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
@@ -10,27 +9,13 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$dataPendaftar = [];
-$query = "SELECT p.*, u.name AS nama_user, plt.nama AS nama_pelatihan
-          FROM pendaftaran_pelatihan p
-          JOIN users u ON p.user_id = u.user_id
-          JOIN pelatihan plt ON p.pelatihan_id = plt.pelatihan_id
-          ORDER BY p.tanggal_daftar DESC";
-
-$result = mysqli_query($conn, $query);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $dataPendaftar[] = $row;
-    }
-}
-
 $dataPelamar = [];
-$queryPelamar = "SELECT l.*, u.name AS nama_user, lwn.judul, lwn.perusahaan
-          FROM lamaran l
-          JOIN users u ON l.user_id = u.user_id
-          JOIN lowongan lwn ON l.lowongan_id = lwn.lowongan_id
-          ORDER BY l.tanggal_lamar DESC";
+$queryPelamar = "SELECT l.*, u.name AS nama_user, u.email, lwn.judul AS nama_lowongan
+                 FROM lamaran l
+                 JOIN users u ON l.user_id = u.user_id
+                 JOIN lowongan lwn ON l.lowongan_id = lwn.lowongan_id
+                 WHERE lwn.created_by = $user_id
+                 ORDER BY l.tanggal_lamar DESC";
 
 $resultPelamar = mysqli_query($conn, $queryPelamar);
 
@@ -40,9 +25,8 @@ if ($resultPelamar && mysqli_num_rows($resultPelamar) > 0) {
     }
 }
 mysqli_close($conn);
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -66,7 +50,7 @@ mysqli_close($conn);
             <nav class="nav">
                 <ul>
                     <li>
-                        <a href="#" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+                        <a href="../index.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
                     </li>
                 </ul>
             </nav>
@@ -86,7 +70,7 @@ mysqli_close($conn);
                         <a href="perusahaan-lowongan.php"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
                     </li>
                     <li>
-                        <a href="perusahaan-pendaftar.php" class="active"><i class="fas fa-users"></i> Data Pendaftar</a>
+                        <a href="perusahaan-pendaftar.php" class="active"><i class="fas fa-users"></i> Data Pelamar</a>
                     </li>
                 </ul>
             </nav>
@@ -95,8 +79,8 @@ mysqli_close($conn);
         <!-- Main Content -->
         <main class="main-content">
             <div class="page-header">
-                <h1>Data Pendaftar</h1>
-                <p>Kelola data pendaftar pelamar kerja</p>
+                <h1>Data Pelamar</h1>
+                <p>Kelola data lamaran kerja</p>
             </div>
 
             <div class="tabs">
