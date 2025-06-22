@@ -54,7 +54,10 @@ mysqli_close($conn);
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
             </div>
-
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" id="password" name="password" value="<?= htmlspecialchars($data['password']) ?>" required>
+            </div>
             <div class="form-actions">
                 <a href="admin-perusahaan.php" class="btn btn-outline">Batal</a>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
