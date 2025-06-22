@@ -96,6 +96,7 @@ mysqli_close($conn);
                             <th>Posisi</th>
                             <th>Perusahaan</th>
                             <th>Jenis</th>
+                            <th>Pendidikan (minimal)</th>
                             <th>Lokasi</th>
                             <th>Batas Lamaran</th>
                             <th>Kualifikasi</th>
@@ -109,6 +110,7 @@ mysqli_close($conn);
                             <td><?= htmlspecialchars($lowongan['judul']) ?></td>
                             <td><?= htmlspecialchars($lowongan['perusahaan']) ?></td>
                             <td><?= htmlspecialchars($lowongan['deskripsi']) ?></td>
+                            <td><?= htmlspecialchars($lowongan['minimal_pendidikan']) ?></td>
                             <td><?= htmlspecialchars($lowongan['lokasi']) ?></td>
                             <td><?= date("d/m/Y", strtotime($lowongan['batas_lamaran'])) ?></td>
                             <td><?= htmlspecialchars($lowongan['kualifikasi']) ?></td>

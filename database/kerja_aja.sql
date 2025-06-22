@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2025 at 11:04 AM
+-- Generation Time: Jun 22, 2025 at 06:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,10 +56,10 @@ CREATE TABLE `lamaran` (
 --
 
 INSERT INTO `lamaran` (`id`, `lowongan_id`, `user_id`, `path_cv`, `surat_lamaran`, `tanggal_lamar`, `status`) VALUES
-(1, 2, 3, 'uploads/cv/cv_3_2_1749644007.pdf', '', '2025-06-11 12:13:27', 'Ditolak'),
-(3, 3, 3, 'uploads/cv/cv_3_3_1749645756.pdf', '', '2025-06-11 12:42:36', 'Ditolak'),
-(5, 4, 3, 'uploads/cv/cv_3_4_1749655146.pdf', '', '2025-06-11 15:19:06', 'Menunggu review'),
-(8, 2, 6, 'uploads/cv/cv_6_2_1749656908.pdf', '', '2025-06-11 15:48:28', 'Diterima');
+(1, 2, 3, '../uploads/cv/cv_3_2_1749644007.pdf', '', '2025-06-11 12:13:27', 'Ditolak'),
+(3, 3, 3, '../uploads/cv/cv_3_3_1749645756.pdf', '', '2025-06-11 12:42:36', 'Ditolak'),
+(5, 4, 3, '../uploads/cv/cv_3_4_1749655146.pdf', '', '2025-06-11 15:19:06', 'Menunggu review'),
+(8, 2, 6, '../uploads/cv/cv_6_2_1749656908.pdf', '', '2025-06-11 15:48:28', 'Diterima');
 
 -- --------------------------------------------------------
 
@@ -75,19 +75,22 @@ CREATE TABLE `lowongan` (
   `deskripsi` text DEFAULT NULL,
   `kualifikasi` text DEFAULT NULL,
   `batas_lamaran` date DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL
+  `created_by` int(11) DEFAULT NULL,
+  `minimal_pendidikan` enum('SMA/SMK','Diploma','Sarjana','Magister','Doktor') DEFAULT 'SMA/SMK'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lowongan`
 --
 
-INSERT INTO `lowongan` (`lowongan_id`, `judul`, `perusahaan`, `lokasi`, `deskripsi`, `kualifikasi`, `batas_lamaran`, `created_by`) VALUES
-(1, 'Customer Service', 'PT Maju Bersama', 'Kecamatan Maju Jaya', 'Full Time', 'Kami mencari Customer Service Representative yang berpengalaman untuk melayani pelanggan kami.', '2025-06-30', 8),
-(2, 'Admin Kantor', 'CV Sukses Mandiri', 'Desa Sukamaju', 'Full Time', 'Dibutuhkan admin kantor untuk mengelola administrasi perusahaan. Kandidat harus teliti, rapi, dan bertanggung jawab', '2025-06-25', 9),
-(3, 'Barista', 'Kopi Kita', 'Kecamatan Maju Jaya', 'Full Time', 'Kopi Kita membuka lowongan untuk posisi barista. Pengalaman tidak diutamakan, akan dilatih.', '2025-06-20', 10),
-(4, 'Digital Marketing Staff', 'PT Digital Kreatif', 'Desa Sukamaju', 'Full Time', 'PT Digital Kreatif mencari Digital Marketing Staff untuk mengelola kampanye digital perusahaan.', '2025-07-10', 11),
-(7, 'Web Developer', 'PT Teknologi Hebat', 'Mataram', 'Full Time', 'Dibutuhkan pelamar yang cekatan dan mampu bekerja sama dengan baik', '2025-07-15', 12);
+INSERT INTO `lowongan` (`lowongan_id`, `judul`, `perusahaan`, `lokasi`, `deskripsi`, `kualifikasi`, `batas_lamaran`, `created_by`, `minimal_pendidikan`) VALUES
+(1, 'Customer Service', 'PT Maju Bersama', 'Kecamatan Maju Jaya', 'Full Time', 'Kami mencari Customer Service Representative yang berpengalaman untuk melayani pelanggan kami.', '2025-06-30', 8, 'SMA/SMK'),
+(2, 'Admin Kantor', 'CV Sukses Mandiri', 'Desa Sukamaju', 'Full Time', 'Dibutuhkan admin kantor untuk mengelola administrasi perusahaan. Kandidat harus teliti, rapi, dan bertanggung jawab', '2025-06-25', 9, 'Diploma'),
+(3, 'Barista', 'Kopi Kita', 'Kecamatan Maju Jaya', 'Full Time', 'Kopi Kita membuka lowongan untuk posisi barista. Pengalaman tidak diutamakan, akan dilatih.', '2025-06-20', 10, 'SMA/SMK'),
+(4, 'Digital Marketing Staff', 'PT Digital Kreatif', 'Desa Sukamaju', 'Full Time', 'PT Digital Kreatif mencari Digital Marketing Staff untuk mengelola kampanye digital perusahaan.', '2025-07-10', 11, 'Sarjana'),
+(7, 'Web Developer', 'PT Teknologi Hebat', 'Mataram', 'Full Time', 'Dibutuhkan pelamar yang cekatan dan mampu bekerja sama dengan baik', '2025-07-15', 12, 'Sarjana'),
+(8, 'IT Support', 'PT Teknologi Hebat', 'Mataram', 'Full Time', 'Ngerti IT', '2025-06-30', 12, 'Sarjana'),
+(9, 'Network Support', 'PT Teknologi Hebat', 'Mataram', 'Kontrak', 'Ngerti jaringan', '2025-06-29', 12, 'SMA/SMK');
 
 -- --------------------------------------------------------
 
@@ -148,12 +151,21 @@ INSERT INTO `pendaftaran_pelatihan` (`id`, `user_id`, `pelatihan_id`, `tanggal_d
 CREATE TABLE `pendidikan` (
   `pendidikan_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `jenjang` varchar(50) NOT NULL,
+  `jenjang` enum('SMA/SMK','Diploma','Sarjana','Magister','Doktor') NOT NULL,
   `nama_institusi` varchar(150) NOT NULL,
   `jurusan` varchar(100) DEFAULT NULL,
   `tahun_lulus` int(4) NOT NULL,
   `nilai` decimal(3,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pendidikan`
+--
+
+INSERT INTO `pendidikan` (`pendidikan_id`, `user_id`, `jenjang`, `nama_institusi`, `jurusan`, `tahun_lulus`, `nilai`) VALUES
+(1, 3, 'SMA/SMK', 'SMA Negeri 1 Jakarta', 'IPA', 2022, 3.10),
+(2, 5, 'Sarjana', 'Institut Teknologi Bandung', 'Teknik Informatika', 2020, 3.90),
+(3, 6, 'Diploma', 'Politeknik Negeri Bandung', 'Teknik Aeornautika', 2019, 3.50);
 
 -- --------------------------------------------------------
 
@@ -322,7 +334,7 @@ ALTER TABLE `lamaran`
 -- AUTO_INCREMENT for table `lowongan`
 --
 ALTER TABLE `lowongan`
-  MODIFY `lowongan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `lowongan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `pelatihan`
@@ -340,7 +352,7 @@ ALTER TABLE `pendaftaran_pelatihan`
 -- AUTO_INCREMENT for table `pendidikan`
 --
 ALTER TABLE `pendidikan`
-  MODIFY `pendidikan_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pendidikan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pengalaman_kerja`
