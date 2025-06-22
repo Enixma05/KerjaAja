@@ -104,7 +104,7 @@ function waktuRelatif($timestamp) {
                 <ul>
                     <li><a href="perusahaan-dashboard.php" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="perusahaan-lowongan.php"><i class="fas fa-briefcase"></i> Lowongan Kerja</a></li>
-                    <li><a href="perusahaan-pendaftar.php"><i class="fas fa-users"></i> Data Pelamar</a></li>
+                    <li><a href="perusahaan-pelamar.php"><i class="fas fa-users"></i> Data Pelamar</a></li>
                 </ul>
             </nav>
         </aside>

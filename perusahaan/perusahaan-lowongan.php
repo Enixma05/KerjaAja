@@ -90,7 +90,7 @@ mysqli_close($conn);
                         <a href="perusahaan-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
                     </li>
                     <li>
-                        <a href="perusahaan-pendaftar.php"><i class="fas fa-users"></i> Data Pelamar</a>
+                        <a href="perusahaan-pelamar.php"><i class="fas fa-users"></i> Data Pelamar</a>
                     </li>
                 </ul>
             </nav>

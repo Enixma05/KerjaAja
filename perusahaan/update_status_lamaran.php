@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("si", $status, $id);
 
     if ($stmt->execute()) {
-        header("Location: admin-pendaftar.php?status=updated");
+        header("Location: perusahaan-pelamar.php?status=updated");
     } else {
         echo "Gagal memperbarui status.";
     }
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
     $conn->close();
 } else {
-    header("Location: admin-pendaftar.php");
+    header("Location: perusahaan-pelamar.php");
     exit();
 }
 ?>
