@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];

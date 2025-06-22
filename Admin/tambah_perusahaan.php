@@ -14,7 +14,7 @@ if (mysqli_num_rows($result) > 0) {
     echo "<script>alert('Email atau Username sudah terdaftar!'); window.location.href='../auth/register.php';</script>";
 } else {
 
-    $insert = "INSERT INTO users (email, name, role, password) VALUES ('$email', '$name', 'user', '$password')";
+    $insert = "INSERT INTO users (email, name, role, password) VALUES ('$email', '$name', 'perusahaan', '$password')";
     if (mysqli_query($conn, $insert)) {
         echo "<script>alert('Registration successful!'); window.location.href='../auth/login.php';</script>";
     } else {

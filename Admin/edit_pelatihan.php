@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 // Cek sesi login
 if (!isset($_SESSION['user_id'])) {

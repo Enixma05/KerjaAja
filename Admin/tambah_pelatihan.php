@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../auth/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nama = $_POST['nama'];

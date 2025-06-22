@@ -41,15 +41,6 @@
                         <input type="email" name="email" placeholder="nama@email.com" required>
                     </div>
                     <div class="form-group">
-                        <label for="role">Role</label>
-                        <select name="role" required>
-                            <option value="" disabled selected>Pilih role Anda</option>
-                            <option value="admin">Admin</option>
-                            <option value="perusahaan">Perusahaan</option>
-                            <option value="user">User</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" name="password" required>
                     </div>

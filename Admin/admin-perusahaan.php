@@ -9,15 +9,15 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// $perusahaan_data = [];
-// $query = "SELECT * FROM perusahaan ORDER BY nama_perusahaan ASC";
-// $result = mysqli_query($conn, $query);
+$perusahaan_data = [];
+$query = "SELECT * FROM users WHERE role = 'perusahaan'";
+$result = mysqli_query($conn, $query);
 
-// if ($result && mysqli_num_rows($result) > 0) {
-//     while ($row = mysqli_fetch_assoc($result)) {
-//         $perusahaan_data[] = $row;
-//     }
-// }
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $perusahaan_data[] = $row;
+    }
+}
 mysqli_close($conn);
 ?>
 <!DOCTYPE html>
@@ -74,23 +74,19 @@ mysqli_close($conn);
                         <tr>
                             <th>Nama Perusahaan</th>
                             <th>Email</th>
-                            <th>Alamat</th>
-                            <th>Telepon</th>
                             <th class="text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <?php if (count($perusahaan_data) > 0): ?>
-                            <?php foreach ($perusahaan_data as $perusahaan): ?> -->buat query
+                        <?php if (count($perusahaan_data) > 0): ?>
+                            <?php foreach ($perusahaan_data as $perusahaan): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($perusahaan['nama_perusahaan']) ?></td>
+                                    <td><?= htmlspecialchars($perusahaan['name']) ?></td>
                                     <td><?= htmlspecialchars($perusahaan['email']) ?></td>
-                                    <td><?= htmlspecialchars($perusahaan['alamat']) ?></td>
-                                    <td><?= htmlspecialchars($perusahaan['telepon']) ?></td>
                                     <td class="text-right">
                                         <div class="action-buttons">
-                                            <a href="edit_perusahaan.php?id=<?= $perusahaan['id'] ?>" class="edit-btn">Edit</a>
-                                            <a href="delete_perusahaan.php?id=<?= $perusahaan['id'] ?>" onclick="return confirm('Hapus data ini?')">Hapus</a>
+                                            <a href="edit_perusahaan.php?id=<?= $perusahaan['user_id'] ?>" class="edit-btn">Edit</a>
+                                            <a href="delete_perusahaan.php?id=<?= $perusahaan['user_id'] ?>" onclick="return confirm('Hapus data ini?')">Hapus</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -111,23 +107,15 @@ mysqli_close($conn);
             <form id="formTambahPerusahaan" method="POST" action="tambah_perusahaan.php">
                 <div class="form-group">
                     <label for="namaPerusahaan">Nama Perusahaan</label>
-                    <input type="text" id="namaPerusahaan" name="nama_perusahaan" required />
+                    <input type="text" id="name" name="name" required />
                 </div>
                 <div class="form-group">
                     <label for="emailPerusahaan">Email</label>
-                    <input type="email" id="emailPerusahaan" name="email" required />
-                </div>
-                <div class="form-group">
-                    <label for="alamatPerusahaan">Alamat</label>
-                    <textarea id="alamatPerusahaan" name="alamat" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="teleponPerusahaan">Telepon</label>
-                    <input type="text" id="teleponPerusahaan" name="telepon" />
+                    <input type="email" id="email" name="email" required />
                 </div>
                 <div class="form-group">
                     <label for="passwordPerusahaan">Password</label>
-                    <input type="password" id="passwordPerusahaan" name="password" required />
+                    <input type="password" id="password" name="password" required />
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-outline" id="batalTambahPerusahaan">Batal</button>
