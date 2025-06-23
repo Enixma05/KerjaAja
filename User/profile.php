@@ -180,16 +180,16 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
                                 </div>
                             </div>
 
-                            <div class="form-section">
+                           <div class="form-section">
                                 <h3>Riwayat Pendidikan</h3>
-                                <?php if (count($pendidikan_list) > 0): ?>
+                                <?php if (!empty($pendidikan_list)): ?>
                                     <ul class="education-list">
                                         <?php foreach ($pendidikan_list as $edu): ?>
                                             <li>
-                                                <strong><?php echo htmlspecialchars($edu['jenjang']); ?></strong> di 
-                                                <?php echo htmlspecialchars($edu['institusi']); ?>, 
-                                                Jurusan <?php echo htmlspecialchars($edu['jurusan']); ?> 
-                                                (Lulus: <?php echo htmlspecialchars($edu['tahun_lulus']); ?>)
+                                                <strong><?php echo htmlspecialchars($edu['jenjang'] ?? '[jenjang tidak tersedia]'); ?></strong>
+                                                di <?php echo htmlspecialchars($edu['nama_institusi'] ?? '[institusi tidak tersedia]'); ?>,
+                                                Jurusan <?php echo htmlspecialchars($edu['jurusan'] ?? '[jurusan tidak tersedia]'); ?>
+                                                (Lulus: <?php echo htmlspecialchars($edu['tahun_lulus'] ?? '-'); ?>)
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
@@ -198,8 +198,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
                                 <?php endif; ?>
                                 <a href="kelola_pendidikan.php" class="btn btn-secondary btn-sm"><i class="fas fa-plus"></i> Kelola Pendidikan</a>
                             </div>
-                                                            
-                            <div class="form-actions"><button type="submit" class="btn btn-primary"><i
+                                 <div class="form-actions"><button type="submit" class="btn btn-primary"><i
                                         class="fas fa-save"></i> Simpan Perubahan</button></div>
                         </form>
                     </div>
