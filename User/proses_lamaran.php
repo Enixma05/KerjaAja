@@ -17,7 +17,7 @@ if (empty($lowongan_id)) {
 
 $cv_path = '';
 if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = 'uploads/cv/';
+    $upload_dir = '../uploads/cv/';
     $file_extension = pathinfo($_FILES['cv']['name'], PATHINFO_EXTENSION);
     $unique_filename = "cv_" . $user_id . "_" . $lowongan_id . "_" . time() . "." . $file_extension;
     $target_file = $upload_dir . $unique_filename;

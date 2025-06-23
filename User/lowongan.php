@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$query_sql = "SELECT lowongan_id, judul, perusahaan, lokasi, deskripsi, kualifikasi, batas_lamaran, pendidikan FROM lowongan";
+$query_sql = "SELECT lowongan_id, judul, perusahaan, lokasi, deskripsi, kualifikasi, batas_lamaran, minimal_pendidikan FROM lowongan";
 $params = [];
 $types = '';
 
@@ -38,9 +38,9 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     .job-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
     }
 
     .job-card {
@@ -55,7 +55,7 @@ $stmt->close();
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
 
-   
+
     .job-card-description {
         margin-bottom: 60px;
     }
@@ -69,9 +69,8 @@ $stmt->close();
         align-self: stretch;
         padding: 10px;
     }
-
     </style>
-</head> 
+</head>
 
 <body>
     <header class="header">
@@ -123,7 +122,7 @@ $stmt->close();
 
     <footer class="footer">
         <div class="container">
-            <div class="footer-bottom">     
+            <div class="footer-bottom">
                 <p>&copy; 2025 KerjaAja. Hak Cipta Dilindungi.</p>
             </div>
         </div>
@@ -166,7 +165,7 @@ $stmt->close();
                     <div class="job-card-details">
                         <p><i class="fas fa-building"></i> ${job.perusahaan}</p>
                         <p><i class="fas fa-map-marker-alt"></i> ${job.lokasi}</p>
-                        <p><i class="fas fa-graduation-cap"></i> Pendidikan Minimal: ${job.pendidikan}</p>
+                        <p><i class="fas fa-graduation-cap"></i> Pendidikan Minimal: ${job.minimal_pendidikan}</p>
                         <p><i class="fas fa-calendar-times"></i> Deadline: ${deadline}</p>
                     </div>
                     <p class="job-card-description">${job.kualifikasi.substring(0, 200)}...</p>

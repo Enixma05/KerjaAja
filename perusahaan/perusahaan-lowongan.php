@@ -45,7 +45,8 @@ mysqli_close($conn);
             <nav class="nav">
                 <ul>
                     <li>
-                        <a href="../index.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+                        <a href="../index.php" id="logoutBtn" class="btn-logout"> <i class="fas fa-sign-out-alt"></i>
+                            Logout </a>
                     </li>
                 </ul>
             </nav>
@@ -62,7 +63,8 @@ mysqli_close($conn);
                         <a href="perusahaan-dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="perusahaan-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan Kerja</a>
+                        <a href="perusahaan-lowongan.php" class="active"><i class="fas fa-briefcase"></i> Lowongan
+                            Kerja</a>
                     </li>
                     <li>
                         <a href="perusahaan-pelamar.php"><i class="fas fa-users"></i> Data Pelamar</a>

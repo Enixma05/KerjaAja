@@ -34,7 +34,7 @@ $user_id = $_SESSION['user_id'];
                     <li><a href="profile.php" class="btn-logout">
                             <i class="fas fa-user"></i> Profile
                         </a></li>
-                    <li><a href="../login/logout.php" id="logoutBtn" class="btn-logout">
+                    <li><a href="../auth/logout.php" id="logoutBtn" class="btn-logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a></li>
                 </ul>
@@ -111,8 +111,8 @@ $user_id = $_SESSION['user_id'];
             </div>
         </div>
     </footer>
-    <script src="js/main.js"></script>
-    <script src="js/notifications-page.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/notifications-page.js"></script>
 </body>
 
 </html>
