@@ -1,5 +1,5 @@
-<?php session_start();?>
 <?php
+session_start();
 include '../auth/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -8,39 +8,49 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-// Total pelatihan
+
 $q3 = $conn->query("SELECT COUNT(*) as total_pelatihan FROM pelatihan");
 $total_pelatihan = $q3->fetch_assoc()['total_pelatihan'];
 
-// Total peserta pelatihan
 $q4 = $conn->query("SELECT COUNT(*) as total_peserta FROM pendaftaran_pelatihan");
 $total_peserta = $q4->fetch_assoc()['total_peserta'];
 
-$trainingCounts = array_fill_keys(['Jan','Feb','Mar','Apr','Mei','Jun','Jul'], 0);
+$monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
+$trainingCounts = array_fill_keys($monthNames, 0);
+$participantCounts = array_fill_keys($monthNames, 0);
 
-$sql = "SELECT MONTH(tanggal) AS bulan, COUNT(*) AS jumlah FROM pelatihan GROUP BY bulan";
-$result = $conn->query($sql);
-
-while ($row = $result->fetch_assoc()) {
+$sql_pelatihan = "SELECT MONTH(tanggal) AS bulan, COUNT(*) AS jumlah FROM pelatihan WHERE YEAR(tanggal) = YEAR(CURDATE()) GROUP BY bulan";
+$result_pelatihan = $conn->query($sql_pelatihan);
+while ($row = $result_pelatihan->fetch_assoc()) {
     $monthIndex = (int)$row['bulan'];
-    $monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun', 'Jul'];
-    if ($monthIndex >= 1 && $monthIndex <= 7) {
+    if ($monthIndex >= 1 && $monthIndex <= 12) {
         $trainingCounts[$monthNames[$monthIndex - 1]] = (int)$row['jumlah'];
     }
 }
 
+$sql_peserta = "SELECT MONTH(p.tanggal) AS bulan, COUNT(*) AS jumlah_peserta 
+                FROM pelatihan p
+                JOIN pendaftaran_pelatihan pp ON p.pelatihan_id = pp.pelatihan_id
+                WHERE YEAR(p.tanggal) = YEAR(CURDATE())
+                GROUP BY MONTH(p.tanggal)";
+$result_peserta = $conn->query($sql_peserta);
+
+while ($row = $result_peserta->fetch_assoc()) {
+    $monthIndex = (int)$row['bulan'];
+    if ($monthIndex >= 1 && $monthIndex <= 12) {
+        $participantCounts[$monthNames[$monthIndex - 1]] = (int)$row['jumlah_peserta'];
+    }
+}
+
 $statusCounts = ['Diterima' => 0, 'Ditolak' => 0, 'Menunggu review' => 0];
-
-$sql = "SELECT status, COUNT(*) AS jumlah FROM lamaran GROUP BY status";
-$result = $conn->query($sql);
-
-while ($row = $result->fetch_assoc()) {
+$sql_status = "SELECT status, COUNT(*) AS jumlah FROM lamaran GROUP BY status";
+$result_status = $conn->query($sql_status);
+while ($row = $result_status->fetch_assoc()) {
     $status = $row['status'];
     if (array_key_exists($status, $statusCounts)) {
         $statusCounts[$status] = (int)$row['jumlah'];
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +68,6 @@ while ($row = $result->fetch_assoc()) {
 </head>
 
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -74,9 +83,7 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </header>
 
-    <!-- Dashboard Content -->
     <div class="dashboard-container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <nav class="sidebar-nav">
                 <ul>
@@ -88,7 +95,6 @@ while ($row = $result->fetch_assoc()) {
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="page-header">
                 <h1>Dashboard Admin</h1>
@@ -109,7 +115,7 @@ while ($row = $result->fetch_assoc()) {
                 <div class="stat-card">
                     <div class="stat-header">
                         <h3>Total Peserta</h3>
-                        <div class="stat-icon green">
+                        <div class="stat-icon orange">
                             <i class="fas fa-users"></i>
                         </div>
                     </div>
@@ -120,63 +126,24 @@ while ($row = $result->fetch_assoc()) {
 
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3>Pelatihan per Bulan</h3>
-                    <p>Jumlah pelatihan yang diadakan per bulan</p>
+                    <h3>Statistik Pelatihan & Peserta per Bulan</h3>
+                    <p>Perbandingan jumlah pelatihan dengan pendaftar setiap bulan</p>
                     <div class="chart-container">
                         <canvas id="trainingChart"></canvas>
                     </div>
                 </div>
-            </div>
-<!-- 
-            <div class="recent-activities">
-                <h2>Aktivitas Terbaru</h2>
-                <div class="activities-list">
-                    <div class="activity-item">
-                        <div class="activity-icon blue">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Pendaftaran Pelatihan Baru</h4>
-                            <p>Fadlullah Hasan mendaftar pelatihan Desain Grafis</p>
-                        </div>
-                        <div class="activity-time">5 menit yang lalu</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon amber">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Lamaran Kerja Baru</h4>
-                            <p>Ani Wijaya melamar posisi Customer Service Representative di PT Maju Bersama</p>
-                        </div>
-                        <div class="activity-time">30 menit yang lalu</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon green">
-                            <i class="fas fa-bell"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Notifikasi Terkirim</h4>
-                            <p>Notifikasi reminder pelatihan terkirim ke 45 peserta</p>
-                        </div>
-                        <div class="activity-time">1 jam yang lalu</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon blue">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Pelatihan Selesai</h4>
-                            <p>Pelatihan Digital Marketing telah selesai dengan 15 peserta</p>
-                        </div>
-                        <div class="activity-time">2 jam yang lalu</div>
+                <div class="chart-card">
+                    <h3>Status Lamaran Kerja</h3>
+                    <p>Distribusi status lamaran kerja yang masuk</p>
+                    <div class="chart-container">
+                        <canvas id="applicationChart"></canvas>
                     </div>
                 </div>
             </div>
-        </main>
-    </div> -->
 
-    <!-- Footer -->
+        </main>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-bottom">
@@ -185,37 +152,30 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </footer>
 
-    <!-- <script src="js/data.js"></script> -->
-    <script src="js/main.js"></script>
-    <script src="js/notifications.js"></script>
-    <script src="js/admin-notifications.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Setup charts
         const trainingCtx = document.getElementById('trainingChart').getContext('2d');
-        const applicationCtx = document.getElementById('applicationChart').getContext('2d');
-
         const trainingData = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul'],
+            labels: <?= json_encode($monthNames); ?>,
             datasets: [{
                 label: 'Jumlah Pelatihan',
                 data: <?= json_encode(array_values($trainingCounts)); ?>,
                 backgroundColor: '#3b82f6',
+                borderColor: '#3b82f6',
+                type: 'bar',
+                order: 2,
                 borderRadius: 4
+            }, {
+                label: 'Jumlah Peserta',
+                data: <?= json_encode(array_values($participantCounts)); ?>,
+                borderColor: '#f97316',
+                backgroundColor: '#f97316',
+                tension: 0.3,
+                type: 'line',
+                order: 1
             }]
         };
 
-        const applicationData = {
-            labels: ['Diterima', 'Ditolak', 'Menunggu'],
-            datasets: [{
-                label: 'Status Lamaran',
-                data: <?= json_encode(array_values($statusCounts)); ?>,
-                backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
-                borderWidth: 0
-            }]
-        };
-
-        // Create training chart
         new Chart(trainingCtx, {
             type: 'bar',
             data: trainingData,
@@ -229,11 +189,30 @@ while ($row = $result->fetch_assoc()) {
                             precision: 0
                         }
                     }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
                 }
             }
         });
 
-        // Create application status chart
+        const applicationCtx = document.getElementById('applicationChart').getContext('2d');
+        const applicationData = {
+            labels: ['Diterima', 'Ditolak', 'Menunggu'],
+            datasets: [{
+                label: 'Status Lamaran',
+                data: <?= json_encode(array_values($statusCounts)); ?>,
+                backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                borderWidth: 0
+            }]
+        };
+
         new Chart(applicationCtx, {
             type: 'pie',
             data: applicationData,
@@ -248,7 +227,6 @@ while ($row = $result->fetch_assoc()) {
             }
         });
 
-        // Setup logout button
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             if (confirm('Apakah Anda yakin ingin logout?')) {

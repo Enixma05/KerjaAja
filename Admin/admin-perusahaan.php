@@ -9,11 +9,9 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Ambil pesan sukses/error dari session
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 
-// Hapus pesan dari session setelah diambil
 unset($_SESSION['success_message']);
 unset($_SESSION['error_message']);
 
@@ -30,6 +28,7 @@ mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,8 +46,8 @@ mysqli_close($conn);
             <nav class="nav">
                 <ul>
                     <li><a href="../index.php" id="logoutBtn" class="btn-logout">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a></li>
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a></li>
                 </ul>
             </nav>
         </div>
@@ -60,7 +59,8 @@ mysqli_close($conn);
                 <ul>
                     <li><a href="admin-dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="admin-pelatihan.php"><i class="fas fa-book"></i> Pelatihan</a></li>
-                    <li><a href="admin-perusahaan.php" class="active"><i class="fas fa-building"></i> Perusahaan</a></li>
+                    <li><a href="admin-perusahaan.php" class="active"><i class="fas fa-building"></i> Perusahaan</a>
+                    </li>
                     <li><a href="admin-pendaftar.php"><i class="fas fa-users"></i> Data Pendaftar</a></li>
                 </ul>
             </nav>
@@ -91,20 +91,24 @@ mysqli_close($conn);
                     </thead>
                     <tbody>
                         <?php if (count($perusahaan_data) > 0): ?>
-                            <?php foreach ($perusahaan_data as $perusahaan): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($perusahaan['name']) ?></td>
-                                    <td><?= htmlspecialchars($perusahaan['email']) ?></td>
-                                    <td class="text-right">
-                                        <div class="action-buttons">
-                                            <a href="edit_perusahaan.php?id=<?= $perusahaan['user_id'] ?>" class="edit-btn">Edit</a>
-                                            <a href="delete_perusahaan.php?id=<?= $perusahaan['user_id'] ?>" onclick="return confirm('Hapus data ini?')">Hapus</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                        <?php foreach ($perusahaan_data as $perusahaan): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($perusahaan['name']) ?></td>
+                            <td><?= htmlspecialchars($perusahaan['email']) ?></td>
+                            <td class="text-right">
+                                <div class="action-buttons">
+                                    <a href="edit_perusahaan.php?id=<?= $perusahaan['user_id'] ?>"
+                                        class="edit-btn">Edit</a>
+                                    <a href="delete_perusahaan.php?id=<?= $perusahaan['user_id'] ?>"
+                                        onclick="return confirm('Hapus data ini?')">Hapus</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="3" style="text-align:center;">Belum ada akun perusahaan.</td></tr>
+                        <tr>
+                            <td colspan="3" style="text-align:center;">Belum ada akun perusahaan.</td>
+                        </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -128,7 +132,8 @@ mysqli_close($conn);
                 </div>
                 <div class="form-group">
                     <label for="password">Password *</label>
-                    <input type="password" id="password" name="password" required placeholder="Minimal 6 karakter" minlength="6">
+                    <input type="password" id="password" name="password" required placeholder="Minimal 6 karakter"
+                        minlength="6">
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-outline" id="batalTambahPerusahaan">Batal</button>
@@ -149,194 +154,170 @@ mysqli_close($conn);
     </footer>
 
     <script>
-        // Toast functionality
-        function showToast(message, type = 'success') {
-            // Remove existing toasts
-            const existingToasts = document.querySelectorAll('.toast');
-            existingToasts.forEach(toast => toast.remove());
-            
-            // Create toast element
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.innerHTML = `
+    function showToast(message, type = 'success') {
+        const existingToasts = document.querySelectorAll('.toast');
+        existingToasts.forEach(toast => toast.remove());
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
                 <div class="toast-content">
                     <i class="${type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'}"></i>
                     <span>${message}</span>
                 </div>
                 <button class="toast-close">&times;</button>
             `;
-            
-            // Add to document
-            document.body.appendChild(toast);
-            
-            // Show toast
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 100);
-            
-            // Auto hide after 3 seconds
-            setTimeout(() => {
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            hideToast(toast);
+        }, 3000);
+
+        const closeBtn = toast.querySelector('.toast-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
                 hideToast(toast);
-            }, 3000);
-            
-            // Close button
-            const closeBtn = toast.querySelector('.toast-close');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    hideToast(toast);
-                });
-            }
+            });
         }
+    }
 
-        function hideToast(toast) {
-            if (toast && toast.parentNode) {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            }
-        }
-
-        // Modal functionality
-        function openModal(modal) {
-            if (!modal) {
-                console.error('Modal element not found');
-                return;
-            }
-            
-            modal.style.display = "flex";
+    function hideToast(toast) {
+        if (toast && toast.parentNode) {
+            toast.classList.remove('show');
             setTimeout(() => {
-                modal.classList.add("show");
-            }, 10);
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeModal(modal) {
-            if (!modal) return;
-            
-            modal.classList.remove("show");
-            setTimeout(() => {
-                modal.style.display = "none";
-                document.body.style.overflow = "";
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
             }, 300);
         }
+    }
 
-        // Initialize when DOM is loaded
-        document.addEventListener("DOMContentLoaded", function () {
-            // Show messages from PHP session
-            <?php if (!empty($success_message)): ?>
-                showToast("<?= addslashes($success_message) ?>", "success");
-            <?php endif; ?>
-            
-            <?php if (!empty($error_message)): ?>
-                showToast("<?= addslashes($error_message) ?>", "error");
-            <?php endif; ?>
-            
-            // Get elements
-            const addCompanyBtn = document.getElementById("addCompanyBtn");
-            const modal = document.getElementById("modalTambahPerusahaan");
-            const form = document.getElementById("formTambahPerusahaan");
-            const closeModalBtn = document.querySelector(".close-modal");
-            const cancelBtn = document.getElementById("batalTambahPerusahaan");
-            const submitBtn = document.getElementById("submitBtn");
-            
-            // Input elements
-            const nameInput = document.getElementById("name");
-            const emailInput = document.getElementById("email");
-            const passwordInput = document.getElementById("password");
-            
-            // Add Company Button Event
-            if (addCompanyBtn) {
-                addCompanyBtn.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    
-                    // Reset form
-                    if (form) form.reset();
-                    
-                    // Open modal
-                    openModal(modal);
-                    
-                    // Focus on first input
-                    if (nameInput) nameInput.focus();
-                });
-            }
-            
-            // Close Modal Events
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    closeModal(modal);
-                });
-            }
-            
-            if (cancelBtn) {
-                cancelBtn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    closeModal(modal);
-                });
-            }
-            
-            // Close modal when clicking outside
-            window.addEventListener("click", function (event) {
-                if (event.target === modal) {
-                    closeModal(modal);
-                }
+    function openModal(modal) {
+        if (!modal) {
+            console.error('Modal element not found');
+            return;
+        }
+
+        modal.style.display = "flex";
+        setTimeout(() => {
+            modal.classList.add("show");
+        }, 10);
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(modal) {
+        if (!modal) return;
+
+        modal.classList.remove("show");
+        setTimeout(() => {
+            modal.style.display = "none";
+            document.body.style.overflow = "";
+        }, 300);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        <?php if (!empty($success_message)): ?>
+        showToast("<?= addslashes($success_message) ?>", "success");
+        <?php endif; ?>
+
+        <?php if (!empty($error_message)): ?>
+        showToast("<?= addslashes($error_message) ?>", "error");
+        <?php endif; ?>
+
+        const addCompanyBtn = document.getElementById("addCompanyBtn");
+        const modal = document.getElementById("modalTambahPerusahaan");
+        const form = document.getElementById("formTambahPerusahaan");
+        const closeModalBtn = document.querySelector(".close-modal");
+        const cancelBtn = document.getElementById("batalTambahPerusahaan");
+        const submitBtn = document.getElementById("submitBtn");
+
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+
+        if (addCompanyBtn) {
+            addCompanyBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+
+                if (form) form.reset();
+
+                openModal(modal);
+
+                if (nameInput) nameInput.focus();
             });
-            
-            // ESC key to close modal
-            document.addEventListener("keydown", function(event) {
-                if (event.key === "Escape") {
-                    closeModal(modal);
-                }
+        }
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                closeModal(modal);
             });
-            
-            // Form validation
-            if (form) {
-                form.addEventListener("submit", function(e) {
-                    const name = nameInput.value.trim();
-                    const email = emailInput.value.trim();
-                    const password = passwordInput.value.trim();
-                    
-                    // Basic validation
-                    if (!name || !email || !password) {
-                        e.preventDefault();
-                        showToast("Semua field harus diisi!", "error");
-                        return;
-                    }
-                    
-                    if (password.length < 6) {
-                        e.preventDefault();
-                        showToast("Password minimal 6 karakter!", "error");
-                        return;
-                    }
-                    
-                    // Email validation
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(email)) {
-                        e.preventDefault();
-                        showToast("Format email tidak valid!", "error");
-                        return;
-                    }
-                    
-                    // Show loading state
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-                });
-            }
-            
-            // Logout functionality
-            const logoutBtn = document.getElementById("logoutBtn");
-            if (logoutBtn) {
-                logoutBtn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    if (confirm("Yakin ingin logout?")) {
-                        window.location.href = "../index.php";
-                    }
-                });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                closeModal(modal);
+            });
+        }
+
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                closeModal(modal);
             }
         });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                closeModal(modal);
+            }
+        });
+
+        if (form) {
+            form.addEventListener("submit", function(e) {
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                if (!name || !email || !password) {
+                    e.preventDefault();
+                    showToast("Semua field harus diisi!", "error");
+                    return;
+                }
+
+                if (password.length < 6) {
+                    e.preventDefault();
+                    showToast("Password minimal 6 karakter!", "error");
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    e.preventDefault();
+                    showToast("Format email tidak valid!", "error");
+                    return;
+                }
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+            });
+        }
+
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (confirm("Yakin ingin logout?")) {
+                    window.location.href = "../index.php";
+                }
+            });
+        }
+    });
     </script>
 </body>
+
 </html>

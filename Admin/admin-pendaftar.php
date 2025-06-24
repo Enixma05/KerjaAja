@@ -68,7 +68,8 @@ mysqli_close($conn);
                     <li><a href="admin-dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="admin-pelatihan.php"><i class="fas fa-book"></i> Pelatihan</a></li>
                     <li><a href="admin-perusahaan.php"><i class="fas fa-building"></i> Perusahaan</a></li>
-                    <li><a href="admin-pendaftar.php" class="active"><i class="fas fa-users"></i> Data Pendaftar</a></li>
+                    <li><a href="admin-pendaftar.php" class="active"><i class="fas fa-users"></i> Data Pendaftar</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -146,28 +147,22 @@ mysqli_close($conn);
         const searchTrainingApplicant = document.getElementById("searchTrainingApplicant");
         const searchJobApplicant = document.getElementById("searchJobApplicant");
 
-        // Tab functionality
         tabBtns.forEach((btn) => {
             btn.addEventListener("click", function() {
                 const tabName = this.getAttribute("data-tab");
 
-                // Remove active class from all buttons and panes
                 tabBtns.forEach((b) => b.classList.remove("active"));
                 tabPanes.forEach((p) => p.classList.remove("active"));
 
-                // Add active class to current button and pane
                 this.classList.add("active");
                 document.getElementById(tabName + "Tab").classList.add("active");
             });
         });
 
-        // Display training applicants
         displayTrainingApplicants(mockTrainingApplicants);
 
-        // Display job applicants
         displayJobApplicants(mockJobApplicants);
 
-        // Search training applicants
         searchTrainingApplicant.addEventListener("input", function() {
             const searchTerm = this.value.toLowerCase();
             const filteredApplicants = mockTrainingApplicants.filter((applicant) => applicant.name
@@ -177,7 +172,6 @@ mysqli_close($conn);
             displayTrainingApplicants(filteredApplicants);
         });
 
-        // Search job applicants
         searchJobApplicant.addEventListener("input", function() {
             const searchTerm = this.value.toLowerCase();
             const filteredApplicants = mockJobApplicants.filter(
@@ -189,9 +183,6 @@ mysqli_close($conn);
             displayJobApplicants(filteredApplicants);
         });
 
-        // Function to display training applicants
-
-        // Function to display job applicants
         function displayJobApplicants(applicants) {
             jobApplicantTable.innerHTML = "";
 
@@ -251,11 +242,9 @@ mysqli_close($conn);
                     jobApplicantTable.appendChild(row);
                 });
 
-                // Add event listeners to action buttons
                 document.querySelectorAll(".accept-job-btn").forEach((button) => {
                     button.addEventListener("click", function() {
                         const applicantId = this.getAttribute("data-id");
-                        // In a real app, this would send data to a server
                         alert("Pelamar berhasil diterima untuk posisi yang dilamar!");
                     });
                 });
@@ -263,14 +252,12 @@ mysqli_close($conn);
                 document.querySelectorAll(".reject-job-btn").forEach((button) => {
                     button.addEventListener("click", function() {
                         const applicantId = this.getAttribute("data-id");
-                        // In a real app, this would send data to a server
                         alert("Pelamar telah ditolak untuk posisi yang dilamar!");
                     });
                 });
             }
         }
 
-        // Setup logout button
         document.getElementById("logoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
             window.location.href = "../auth/logout.php";

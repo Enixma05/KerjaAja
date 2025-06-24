@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-//query untuk mendapatkan data lamaran
 $q1 = $conn->query("SELECT COUNT(*) as total_lowongan FROM lowongan WHERE created_by = $user_id");
 $total_lowongan = $q1->fetch_assoc()['total_lowongan'];
 
@@ -19,7 +18,6 @@ $q2 = $conn->query("SELECT COUNT(*) as total_lamaran
                     WHERE lw.created_by = $user_id");
 $total_lamaran = $q2->fetch_assoc()['total_lamaran'];
 
-//query untuk statistik lamaran
 $statusCounts = ['Diterima' => 0, 'Ditolak' => 0, 'Menunggu review' => 0];
 
 $sql = "
@@ -38,7 +36,6 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 
-//query untuk aktivitas terbaru
 $aktivitasTerbaru = null;
 $queryAktivitas = "
     SELECT u.name AS nama_pelamar, lwn.judul AS posisi, lwn.perusahaan, l.tanggal_lamar
@@ -149,7 +146,7 @@ function waktuRelatif($timestamp) {
                 </div>
             </div>
             <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const lamaranStatusCtx = document.getElementById('lamaranStatusChart').getContext('2d');
 
                 const lamaranStatusChart = new Chart(lamaranStatusCtx, {
@@ -194,16 +191,18 @@ function waktuRelatif($timestamp) {
                             <i class="fas fa-briefcase"></i>
                         </div>
                         <?php if ($aktivitasTerbaru): ?>
-                            <div class="activity-content">
-                                <h4>Lamaran Kerja Baru</h4>
-                                <p><?= htmlspecialchars($aktivitasTerbaru['nama_pelamar']) ?> melamar posisi <?= htmlspecialchars($aktivitasTerbaru['posisi']) ?> di <?= htmlspecialchars($aktivitasTerbaru['perusahaan']) ?></p>
-                            </div>
-                                <div class="activity-time"><?= waktuRelatif($aktivitasTerbaru['tanggal_lamar']) ?></div>
+                        <div class="activity-content">
+                            <h4>Lamaran Kerja Baru</h4>
+                            <p><?= htmlspecialchars($aktivitasTerbaru['nama_pelamar']) ?> melamar posisi
+                                <?= htmlspecialchars($aktivitasTerbaru['posisi']) ?> di
+                                <?= htmlspecialchars($aktivitasTerbaru['perusahaan']) ?></p>
+                        </div>
+                        <div class="activity-time"><?= waktuRelatif($aktivitasTerbaru['tanggal_lamar']) ?></div>
                         <?php else: ?>
-                            <p style="padding: 10px;">Belum ada aktivitas terbaru.</p>
+                        <p style="padding: 10px;">Belum ada aktivitas terbaru.</p>
                         <?php endif; ?>
+                    </div>
                 </div>
-            </div>
         </main>
     </div>
 
@@ -216,7 +215,6 @@ function waktuRelatif($timestamp) {
         </div>
     </footer>
 
-    <!-- <script src="js/data.js"></script> -->
     <script src="js/main.js"></script>
     <script src="js/notifications.js"></script>
     <script src="js/admin-notifications.js"></script>
@@ -246,7 +244,6 @@ function waktuRelatif($timestamp) {
             }]
         };
 
-        // Create training chart
         new Chart(trainingCtx, {
             type: 'bar',
             data: trainingData,
@@ -264,7 +261,6 @@ function waktuRelatif($timestamp) {
             }
         });
 
-        // Create application status chart
         new Chart(applicationCtx, {
             type: 'pie',
             data: applicationData,
@@ -279,7 +275,6 @@ function waktuRelatif($timestamp) {
             }
         });
 
-        // Setup logout button
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             if (confirm('Apakah Anda yakin ingin logout?')) {

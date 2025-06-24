@@ -2,7 +2,6 @@
 <?php
 include '../auth/koneksi.php';
 
-// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
@@ -189,66 +188,62 @@ mysqli_close($conn);
     </footer>
 
     <script src="../js/main.js"></script>
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const addTrainingBtn = document.getElementById("addTrainingBtn");
-            const trainingModal = document.getElementById("trainingModal");
-            const deleteModal = document.getElementById("deleteModal");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
-            const trainingForm = document.getElementById("trainingForm");
-            const trainingIdInput = document.getElementById("trainingId");
-            const nameInput = document.getElementById("name");
-            const dateInput = document.getElementById("date");
-            const locationInput = document.getElementById("location");
-            const quotaInput = document.getElementById("quota");
-            const descriptionInput = document.getElementById("description");
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const addTrainingBtn = document.getElementById("addTrainingBtn");
+        const trainingModal = document.getElementById("trainingModal");
+        const deleteModal = document.getElementById("deleteModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDescription = document.getElementById("modalDescription");
+        const trainingForm = document.getElementById("trainingForm");
+        const trainingIdInput = document.getElementById("trainingId");
+        const nameInput = document.getElementById("name");
+        const dateInput = document.getElementById("date");
+        const locationInput = document.getElementById("location");
+        const quotaInput = document.getElementById("quota");
+        const descriptionInput = document.getElementById("description");
 
-            // ✅ Fungsi saat tombol "Tambah Pelatihan" ditekan
-            addTrainingBtn.addEventListener("click", function () {
-                modalTitle.innerText = "Tambah Pelatihan Baru";
-                modalDescription.innerText = "Isi form berikut untuk menambahkan pelatihan baru";
-                trainingForm.action = "tambah_pelatihan.php";
+        addTrainingBtn.addEventListener("click", function() {
+            modalTitle.innerText = "Tambah Pelatihan Baru";
+            modalDescription.innerText = "Isi form berikut untuk menambahkan pelatihan baru";
+            trainingForm.action = "tambah_pelatihan.php";
 
-                // Kosongkan form
-                trainingIdInput.value = "";
-                nameInput.value = "";
-                dateInput.value = "";
-                locationInput.value = "";
-                quotaInput.value = "";
-                descriptionInput.value = "";
+            trainingIdInput.value = "";
+            nameInput.value = "";
+            dateInput.value = "";
+            locationInput.value = "";
+            quotaInput.value = "";
+            descriptionInput.value = "";
 
-                trainingModal.style.display = "block";
-            });
+            trainingModal.style.display = "block";
+        });
 
-            // Tombol batal / close modal
-            document.querySelectorAll(".close-modal").forEach((btn) => {
-                btn.addEventListener("click", function () {
-                    trainingModal.style.display = "none";
-                    deleteModal.style.display = "none";
-                });
-            });
-
-            document.getElementById("cancelTraining").addEventListener("click", function () {
+        document.querySelectorAll(".close-modal").forEach((btn) => {
+            btn.addEventListener("click", function() {
                 trainingModal.style.display = "none";
-            });
-
-            document.getElementById("cancelDelete").addEventListener("click", function () {
                 deleteModal.style.display = "none";
             });
-
-            window.addEventListener("click", function (event) {
-                if (event.target === trainingModal) trainingModal.style.display = "none";
-                if (event.target === deleteModal) deleteModal.style.display = "none";
-            });
-
-            // Logout
-            document.getElementById("logoutBtn").addEventListener("click", function (e) {
-                e.preventDefault();
-                window.location.href = "../auth/logout.php";
-            });
         });
-        </script>
+
+        document.getElementById("cancelTraining").addEventListener("click", function() {
+            trainingModal.style.display = "none";
+        });
+
+        document.getElementById("cancelDelete").addEventListener("click", function() {
+            deleteModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function(event) {
+            if (event.target === trainingModal) trainingModal.style.display = "none";
+            if (event.target === deleteModal) deleteModal.style.display = "none";
+        });
+
+        document.getElementById("logoutBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            window.location.href = "../auth/logout.php";
+        });
+    });
+    </script>
 </body>
 
 </html>

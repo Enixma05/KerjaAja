@@ -1,8 +1,7 @@
-<?php session_start();?>
 <?php
+session_start();
 include '../auth/koneksi.php';
 
-// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
@@ -10,29 +9,19 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Query SQL dasar
-$query_sql = "SELECT * FROM pelatihan";
-$search_term = ''; 
-
-if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
-
-    $search_term = trim($_GET['search']);
-    
-    $query_sql .= " WHERE nama LIKE ? OR deskripsi LIKE ?";
-}
-
-$query_sql .= " ORDER BY tanggal DESC";
-
+$query_sql = "SELECT pelatihan_id, nama, kuota, lokasi, deskripsi, tanggal FROM pelatihan ORDER BY tanggal DESC";
 $stmt = $conn->prepare($query_sql);
-
-if (!empty($search_term)) {
-    $search_like = "%" . $search_term . "%";
-    $stmt->bind_param("ss", $search_like, $search_like);
-}
-
 $stmt->execute();
 $result = $stmt->get_result();
 
+$pelatihan_data = [];
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $pelatihan_data[] = $row;
+    }
+}
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +38,11 @@ $result = $stmt->get_result();
         display: flex;
         gap: 10px;
     }
-        
+
     .training-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
     }
 
     .training-item {
@@ -81,8 +70,9 @@ $result = $stmt->get_result();
         opacity: 0.8;
     }
 
-
-        
+    .no-results.hidden {
+        display: none;
+    }
     </style>
 </head>
 
@@ -122,53 +112,15 @@ $result = $stmt->get_result();
             </div>
 
             <div class="search-container">
-                <form action="pelatihan.php" method="GET" class="search-form">
-                    <div class="search-input">
-                        <i class="fas fa-search"></i>
-                        <input type="text" name="search" placeholder="Cari pelatihan..."
-                            value="<?php echo htmlspecialchars($search_term); ?>">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Cari</button>
-                </form>
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchTraining" placeholder="Cari berdasarkan nama atau deskripsi...">
+                </div>
             </div>
 
-            <div class="training-grid" id="trainingGrid">
-                <?php
-                if ($result->num_rows > 0):
-                    while ($row = $result->fetch_assoc()):
-                        $nama = htmlspecialchars($row['nama']);
-                        $kuota = htmlspecialchars($row['kuota']);
-                        $lokasi = htmlspecialchars($row['lokasi']);
-                        $deskripsi_singkat = htmlspecialchars(substr($row['deskripsi'], 0, 200)) . '...';
-                        $tanggal_formatted = date('d F Y', strtotime($row['tanggal']));
-                ?>
-                <div class="training-item">
-                    <div class="training-image"><i class="fas fa-book-open"></i></div>
-                    <div class="training-content">
-                        <h3><?php echo $nama; ?></h3>
-                    </div>
-                    <div class="training-details">
-                        <p><i class="fas fa-users"></i><span class="kuota-display"><?php echo $kuota; ?></span> Kuota
-                        </p>
-                        <p><i class="fas fa-calendar"></i> <?php echo $tanggal_formatted; ?></p>
-                        <p><i class="fas fa-map-marker-alt"></i> <?php echo $lokasi; ?></p>
-                    </div>
-                    <p class="training-description"><?php echo $deskripsi_singkat; ?></p>
-                    <button class="btn btn-primary btn-block register-btn"
-                        data-id="<?php echo $row['pelatihan_id']; ?>">Daftar</button>
-                </div>
-                <?php
-                    endwhile; 
-                else:
-                    if (!empty($search_term)) {
-                        echo "<p>Tidak ada pelatihan yang cocok dengan kata kunci '<strong>" . htmlspecialchars($search_term) . "</strong>'. Coba cari dengan kata kunci lain atau <a href='pelatihan.php'>lihat semua pelatihan</a>.</p>";
-                    } else {
-                        echo "<p>Belum ada pelatihan yang tersedia saat ini.</p>";
-                    }
-                endif;
-                $stmt->close();
-                $conn->close();
-                ?>
+            <div class="training-grid" id="trainingGrid"></div>
+            <div id="noResults" class="no-results hidden">
+                <p>Tidak ada pelatihan yang cocok dengan kata kunci yang Anda cari.</p>
             </div>
         </main>
     </div>
@@ -178,12 +130,68 @@ $result = $stmt->get_result();
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const daftarButtons = document.querySelectorAll('.register-btn');
-        daftarButtons.forEach(button => {
-            button.addEventListener('click', function() {
+        // Mengambil semua data pelatihan yang sudah disiapkan oleh PHP
+        const allTrainings = <?php echo json_encode($pelatihan_data); ?>;
+
+        const trainingGrid = document.getElementById('trainingGrid');
+        const searchInput = document.getElementById('searchTraining');
+        const noResults = document.getElementById('noResults');
+
+        // Fungsi untuk menampilkan data pelatihan ke dalam grid
+        function displayTrainings(trainings) {
+            trainingGrid.innerHTML = ''; // Kosongkan grid sebelum menampilkan hasil baru
+
+            if (trainings.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            trainings.forEach(training => {
+                const tanggal_formatted = new Date(training.tanggal).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                const deskripsi_singkat = training.deskripsi.substring(0, 200) + '...';
+
+                const card = document.createElement('div');
+                card.className = 'training-item';
+                card.innerHTML = `
+                    <div class="training-image"><i class="fas fa-book-open"></i></div>
+                    <div class="training-content">
+                        <h3>${training.nama}</h3>
+                    </div>
+                    <div class="training-details">
+                        <p><i class="fas fa-users"></i><span class="kuota-display">${training.kuota}</span> Kuota</p>
+                        <p><i class="fas fa-calendar"></i> ${tanggal_formatted}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> ${training.lokasi}</p>
+                    </div>
+                    <p class="training-description">${deskripsi_singkat}</p>
+                    <button class="btn btn-primary btn-block register-btn" data-id="${training.pelatihan_id}">Daftar</button>
+                `;
+                trainingGrid.appendChild(card);
+            });
+        }
+
+        // Event listener untuk input pencarian
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredTrainings = allTrainings.filter(training => {
+                return training.nama.toLowerCase().includes(searchTerm) ||
+                    training.deskripsi.toLowerCase().includes(searchTerm);
+            });
+            displayTrainings(filteredTrainings);
+        });
+
+        // Event listener untuk tombol "Daftar" menggunakan event delegation
+        trainingGrid.addEventListener('click', function(e) {
+            // Cek apakah yang diklik adalah tombol daftar
+            if (e.target.classList.contains('register-btn')) {
+                const button = e.target;
                 if (confirm('Apakah Anda yakin ingin mendaftar untuk pelatihan ini?')) {
-                    const pelatihanId = this.dataset.id;
-                    const thisButton = this;
+                    const pelatihanId = button.dataset.id;
                     fetch('proses_pendaftaran.php', {
                             method: 'POST',
                             headers: {
@@ -197,10 +205,10 @@ $result = $stmt->get_result();
                         .then(data => {
                             alert(data.message);
                             if (data.status === 'success') {
-                                thisButton.textContent = 'Terdaftar';
-                                thisButton.disabled = true;
-                                const parentItem = thisButton.closest('.training-item');
-                                const kuotaSpan = parentItem.querySelector(
+                                button.textContent = 'Terdaftar';
+                                button.disabled = true;
+                                // Logika untuk mengurangi kuota jika diperlukan
+                                const kuotaSpan = button.closest('.training-item').querySelector(
                                     '.kuota-display');
                                 if (kuotaSpan) {
                                     let currentKuota = parseInt(kuotaSpan.textContent);
@@ -215,8 +223,11 @@ $result = $stmt->get_result();
                             alert('Terjadi kesalahan saat memproses permintaan Anda.');
                         });
                 }
-            });
+            }
         });
+
+        // Tampilkan semua pelatihan saat halaman pertama kali dimuat
+        displayTrainings(allTrainings);
     });
     </script>
 </body>

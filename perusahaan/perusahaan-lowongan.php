@@ -2,7 +2,6 @@
 <?php
 include '../auth/koneksi.php';
 
-// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
@@ -240,21 +239,16 @@ mysqli_close($conn);
         const lowonganDeadline = document.getElementById("lowonganDeadline");
         const lowonganDeskripsi = document.getElementById("lowonganDeskripsi");
 
-        // ✅ INI LETAK YANG BENAR
         addJobBtn.addEventListener("click", function() {
             jobForm.reset();
             jobIdInput.value = "";
             jobModal.classList.add("show");
         });
 
-
-        // 🔍 SEARCH FUNCTIONALITY
         searchInput.addEventListener("input", function() {
             const searchTerm = this.value.toLowerCase();
-            // Implementasikan filtering manual di sini jika perlu
         });
 
-        // ✅ Modal logic lainnya
         document.querySelectorAll(".close-modal").forEach((closeBtn) => {
             closeBtn.addEventListener("click", function() {
                 jobModal.classList.remove("show");

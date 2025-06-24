@@ -225,7 +225,6 @@ $result_lamaran = mysqli_query($conn, $query_lamaran);
                                 </div>
                             </div>
                             <?php if (strtolower($lamaran['status']) === 'diterima'): ?>
-                            <a href="#" class="btn btn-primary btn-sm">Lihat Detail Penerimaan</a>
                             <?php endif; ?>
                         </div>
                         <?php endwhile; ?>
