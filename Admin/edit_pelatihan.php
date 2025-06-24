@@ -2,21 +2,17 @@
 session_start();
 include '../auth/koneksi.php';
 
-// Cek sesi login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Cek apakah ID pelatihan dikirim via GET
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo "ID pelatihan tidak ditemukan.";
     exit();
 }
 
 $pelatihan_id = $_GET['id'];
-
-// Ambil data pelatihan dari database
 $query = "SELECT * FROM pelatihan WHERE pelatihan_id = ?";
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "i", $pelatihan_id);
@@ -34,11 +30,13 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Edit Pelatihan</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <div class="form-container">
         <h2>Edit Data Pelatihan</h2>
@@ -52,7 +50,8 @@ mysqli_close($conn);
 
             <div class="form-group">
                 <label for="tanggal">Tanggal</label>
-                <input type="date" id="tanggal" name="tanggal" value="<?= htmlspecialchars($data['tanggal']) ?>" required>
+                <input type="date" id="tanggal" name="tanggal" value="<?= htmlspecialchars($data['tanggal']) ?>"
+                    required>
             </div>
 
             <div class="form-group">
@@ -67,7 +66,8 @@ mysqli_close($conn);
 
             <div class="form-group">
                 <label for="deskripsi">Deskripsi</label>
-                <textarea id="deskripsi" name="deskripsi" rows="4" required><?= htmlspecialchars($data['deskripsi']) ?></textarea>
+                <textarea id="deskripsi" name="deskripsi" rows="4"
+                    required><?= htmlspecialchars($data['deskripsi']) ?></textarea>
             </div>
 
             <div class="form-actions">
@@ -77,4 +77,5 @@ mysqli_close($conn);
         </form>
     </div>
 </body>
+
 </html>
