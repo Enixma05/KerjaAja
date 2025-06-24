@@ -154,7 +154,7 @@ $result_lamaran = mysqli_query($conn, $query_lamaran);
                 <div class="tab-content">
                     <div class="tab-pane active" id="pelatihanTab">
                         <?php if (mysqli_num_rows($result_pelatihan) > 0):
-                            mysqli_data_seek($result_pelatihan, 0); // Reset pointer
+                            mysqli_data_seek($result_pelatihan, 0);
                             while ($pelatihan = mysqli_fetch_assoc($result_pelatihan)):
                                 $statusText = "Menunggu";
                                 $statusClass = "status-pending";
@@ -194,7 +194,7 @@ $result_lamaran = mysqli_query($conn, $query_lamaran);
 
                     <div class="tab-pane" id="lamaranTab">
                         <?php if (mysqli_num_rows($result_lamaran) > 0):
-                            mysqli_data_seek($result_lamaran, 0); // Reset pointer
+                            mysqli_data_seek($result_lamaran, 0); 
                             while ($lamaran = mysqli_fetch_assoc($result_lamaran)):
                                 $statusText = "Menunggu";
                                 $statusClass = "status-pending";

@@ -130,17 +130,14 @@ $conn->close();
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Mengambil semua data pelatihan yang sudah disiapkan oleh PHP
         const allTrainings = <?php echo json_encode($pelatihan_data); ?>;
 
         const trainingGrid = document.getElementById('trainingGrid');
         const searchInput = document.getElementById('searchTraining');
         const noResults = document.getElementById('noResults');
 
-        // Fungsi untuk menampilkan data pelatihan ke dalam grid
         function displayTrainings(trainings) {
-            trainingGrid.innerHTML = ''; // Kosongkan grid sebelum menampilkan hasil baru
-
+            trainingGrid.innerHTML = ''; 
             if (trainings.length === 0) {
                 noResults.classList.remove('hidden');
             } else {
@@ -175,7 +172,6 @@ $conn->close();
             });
         }
 
-        // Event listener untuk input pencarian
         searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             const filteredTrainings = allTrainings.filter(training => {
@@ -185,9 +181,7 @@ $conn->close();
             displayTrainings(filteredTrainings);
         });
 
-        // Event listener untuk tombol "Daftar" menggunakan event delegation
         trainingGrid.addEventListener('click', function(e) {
-            // Cek apakah yang diklik adalah tombol daftar
             if (e.target.classList.contains('register-btn')) {
                 const button = e.target;
                 if (confirm('Apakah Anda yakin ingin mendaftar untuk pelatihan ini?')) {
@@ -207,7 +201,6 @@ $conn->close();
                             if (data.status === 'success') {
                                 button.textContent = 'Terdaftar';
                                 button.disabled = true;
-                                // Logika untuk mengurangi kuota jika diperlukan
                                 const kuotaSpan = button.closest('.training-item').querySelector(
                                     '.kuota-display');
                                 if (kuotaSpan) {
@@ -226,7 +219,6 @@ $conn->close();
             }
         });
 
-        // Tampilkan semua pelatihan saat halaman pertama kali dimuat
         displayTrainings(allTrainings);
     });
     </script>

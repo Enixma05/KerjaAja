@@ -2,7 +2,7 @@
 session_start();
 include '../auth/koneksi.php';
 
-// Cek sesi login
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
@@ -14,14 +14,12 @@ $result_user = mysqli_query($conn, $query_user);
 $user_data = mysqli_fetch_assoc($result_user);
 if (!$user_data) { die("Data pengguna tidak ditemukan."); }
 
-// 2. Ambil data statistik
 $query_pelatihan_count = "SELECT COUNT(*) as total FROM pendaftaran_pelatihan WHERE user_id = '$user_id'";
 $total_pelatihan = mysqli_fetch_assoc(mysqli_query($conn, $query_pelatihan_count))['total'];
 
 $query_lamaran_count = "SELECT COUNT(*) as total FROM lamaran WHERE user_id = '$user_id'";
 $total_lamaran = mysqli_fetch_assoc(mysqli_query($conn, $query_lamaran_count))['total'];
 
-// 3. Ambil data untuk setiap tab
 $pendidikan_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM pendidikan WHERE user_id = '$user_id' ORDER BY tahun_lulus DESC"), MYSQLI_ASSOC);
 $pengalaman_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM pengalaman_kerja WHERE user_id = '$user_id' ORDER BY tanggal_mulai DESC"), MYSQLI_ASSOC);
 $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WHERE user_id = '$user_id'"), MYSQLI_ASSOC);
@@ -220,7 +218,7 @@ $keahlian_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM keahlian WH
         const educationModal = document.getElementById('educationModal');
         const addEducationBtn = document.getElementById('addEducationBtn');
 
-        if (educationModal && addEducationBtn) { // Cek dulu apakah elemennya ada
+        if (educationModal && addEducationBtn) {
             const closeModalBtns = educationModal.querySelectorAll('.close-modal, .close-modal-btn');
             const educationForm = document.getElementById('educationForm');
             const modalTitle = document.getElementById('educationModalTitle');

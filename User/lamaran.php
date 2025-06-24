@@ -136,7 +136,7 @@ $stmt->close();
 
                 if (this.files[0].size > 2 * 1024 * 1024) {
                     fileErrorSpan.textContent = 'Ukuran file terlalu besar! Maksimal 2MB.';
-                    this.value = ''; // Reset input file
+                    this.value = '';
                     fileNameSpan.textContent = 'Pilih file';
                 } else {
                     fileNameSpan.textContent = this.files[0].name;

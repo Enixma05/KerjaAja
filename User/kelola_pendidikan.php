@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Ambil daftar pendidikan
 $pendidikan_list = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM pendidikan WHERE user_id = '$user_id' ORDER BY tahun_lulus DESC"), MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
