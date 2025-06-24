@@ -2,24 +2,16 @@
 session_start();
 include '../auth/koneksi.php';
 
-// Pastikan user masih login dan memiliki akses admin
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
 }
-
-// Optional: Tambahkan pengecekan role admin jika ada
-// if ($_SESSION['role'] !== 'admin') {
-//     header("Location: ../index.php");
-//     exit();
-// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     
-    // Validasi input
     if (empty($name) || empty($email) || empty($password)) {
         $_SESSION['error_message'] = "Semua field harus diisi!";
         header("Location: admin-perusahaan.php");
@@ -37,8 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: admin-perusahaan.php");
         exit();
     }
-    
-    // Cek apakah email sudah terdaftar
+
     $check_query = "SELECT user_id FROM users WHERE email = ?";
     $check_stmt = mysqli_prepare($conn, $check_query);
     
@@ -57,10 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_close($check_stmt);
     }
     
-    // Hash password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    // Insert data perusahaan
     $insert_query = "INSERT INTO users (name, email, password, role, created_at) VALUES (?, ?, ?, 'perusahaan', NOW())";
     $insert_stmt = mysqli_prepare($conn, $insert_query);
     
@@ -71,8 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['success_message'] = "Akun perusahaan berhasil ditambahkan!";
             mysqli_stmt_close($insert_stmt);
             mysqli_close($conn);
-            
-            // Redirect kembali ke halaman admin-perusahaan.php
             header("Location: admin-perusahaan.php");
             exit();
         } else {
@@ -89,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 } else {
-    // Jika bukan POST request, redirect ke halaman admin
     header("Location: admin-perusahaan.php");
     exit();
 }
