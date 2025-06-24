@@ -174,7 +174,6 @@ $result = mysqli_query($conn, $query);
         </div>
     </footer>
 
-    <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </body>
 
